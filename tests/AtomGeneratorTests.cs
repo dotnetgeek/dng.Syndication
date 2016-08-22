@@ -33,15 +33,13 @@ namespace dng.Syndication.Tests
                 Generator = "dng.Syndication",
                 Language = "de",
                 UpdatedDate = new DateTime(2016, 08, 16),
-                Link = new Uri("http://www.dotnetgeek.de/rss"),
-                Id = "xxxx"
+                Link = new Uri("http://www.dotnetgeek.de/rss")
             };
 
             feed.FeedEntries = new List<FeedEntry>
             {
                 new FeedEntry
                 {
-                    Id ="abc",
                     Title = "First Entry",
                     Content = "Content",
                     Link = new Uri("http://www.dotnetgeek.com/first-entry"),
@@ -59,20 +57,20 @@ namespace dng.Syndication.Tests
         {
             var expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
                            "<feed xmlns=\"http://www.w3.org/2005/Atom\">" +
-                           "<title>dotnetgeek feed</title>" +
+                           "<title type=\"text\">dotnetgeek feed</title>" +
+                           "<subtitle type=\"text\">Dotnet relevant thinks</subtitle>" +
                            "<id>http://www.dotnetgeek.de/rss</id>" +
                            "<link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
                            "<author><name>Daniel</name><email>email@email.em</email></author>" +
+                           "<rights xmlns=\"\">2016 @ www.dotnetgeek.com</rights>" +
+                           "<generator>dng.Syndication</generator>" +
                            "<updated>2016-08-16T00:00:00Z</updated>" +
                            "<entry><title>First Entry</title>" +
                            "<link href=\"http://www.dotnetgeek.com/first-entry\" />" +
-                           "<summary>summary</summary>" +
-                           "<content>Content</content>" +
+                           "<summary>summary</summary><content>Content</content>" +
                            "<id>http://www.dotnetgeek.com/first-entry</id>" +
                            "<updated>2016-08-16T00:00:00Z</updated>" +
-                           "<published>2016-08-16T00:00:00Z</published>" +
-                           "</entry>" +
-                           "</feed>";
+                           "<published>2016-08-16T00:00:00Z</published></entry></feed>";
 
             Assert.Equal(expected, _feedXml);
         }

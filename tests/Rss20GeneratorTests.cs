@@ -26,30 +26,27 @@ namespace dng.Syndication.Tests
                 {
                     Name = "Daniel",
                     Email = "email@email.em"
-
                 },
                 Copyright = "2016 @ www.dotnetgeek.com",
-                Description = "Dotnet relevant thinks",
+                Description = "Dotnet relevant topics",
                 Generator = "dng.Syndication",
                 Language = "de",
                 UpdatedDate = new DateTime(2016, 08, 16),
                 Link = new Uri("http://www.dotnetgeek.de/rss"),
-                Id = "xxxx"
-            };
-
-            feed.FeedEntries = new List<FeedEntry>
-            {
-                new FeedEntry
+                FeedEntries = new List<FeedEntry>
                 {
-                    Id ="abc",
-                    Title = "First Entry",
-                    Content = "Content",
-                    Link = new Uri("http://www.dotnetgeek.com/first-entry"),
-                    Summary = "summary",
-                    PublishDate = new DateTime(2016, 08, 16),
-                    Updated = new DateTime(2016, 08, 16),
+                    new FeedEntry
+                    {
+                        Title = "First Entry",
+                        Content = "Content",
+                        Link = new Uri("http://www.dotnetgeek.com/first-entry"),
+                        Summary = "summary",
+                        PublishDate = new DateTime(2016, 08, 16),
+                        Updated = new DateTime(2016, 08, 16),
+                    }
                 }
             };
+
 
             return feed;
         }
@@ -62,9 +59,13 @@ namespace dng.Syndication.Tests
                            "<channel><title>dotnetgeek feed</title>" +
                            "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
                            "<link>http://www.dotnetgeek.de/rss</link>" +
-                           "<description>Dotnet relevant thinks</description><copyright>2016 @ www.dotnetgeek.com</copyright>" +
+                           "<description>Dotnet relevant topics</description>" +
+                           "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
+                           "<generator>dng.Syndication</generator>" +
+                           "<language>de</language>" +
+                           "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
                            "<item><title>First Entry</title><description>Content</description>" +
-                           "<guid>http://www.dotnetgeek.com/first-entry</guid>" +
+                           "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
                            "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
                            "</item></channel></rss>";
 

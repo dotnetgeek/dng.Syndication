@@ -2,18 +2,19 @@
 <package >
   <metadata>
     <id>dng.Syndication</id>
-    <version>1.0.0.0</version>
+    <version>1.1.0.0</version>
     <title>RSS and Atom Feeds</title>
     <authors>Daniel Mueller</authors>
     <owners>Daniel Mueller</owners>
     <licenseUrl>https://github.com/dotnetgeek/dng.Syndication/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/dotnetgeek/dng.Syndication</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>c# Atom/RSS syndication generator</description>
+    <description>A simple feed generator which can be used to create valid RSS 2.0 and Atom feeds.</description>
     <copyright>Copyright 2016</copyright>
     <tags>dotnet rss atom feed asp.net</tags>
   </metadata>
   <files>
-    <file src="output\buildresults\*.dll" target="lib" />
+    <file src="output\buildresults\4-6-2\*.dll" target="lib\net46" />
+    <file src="output\buildresults\4-5-2\*.dll" target="lib\net45" />
   </files>
 </package>

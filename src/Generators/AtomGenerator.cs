@@ -25,8 +25,9 @@ namespace dng.Syndication.Generators
             var root = new XElement(ns + "feed");
             var doc = new XDocument(new XDeclaration("1.0", "utf-8", null), root);
 
-            root.Add(new XElement(ns + "title", _feed.Title));
-
+            root.Add(new XElement(ns + "title", _feed.Title, new XAttribute("type", "text")));
+            root.Add(new XElement(ns + "subtitle", _feed.Description, new XAttribute("type", "text")));
+            
 
             if (_feed.Link != null)
             {
@@ -50,11 +51,18 @@ namespace dng.Syndication.Generators
                 root.Add(author);
             }
 
-            if (_feed.UpdatedDate != DateTime.MinValue)
-            {
-                root.Add(new XElement(ns + "updated", _feed.UpdatedDate.ToString(DateTimeRfc3339Format)));
-            }
+            if (!string.IsNullOrWhiteSpace(_feed.Copyright))
+                root.Add(new XElement("rights", _feed.Copyright));
 
+            if (!string.IsNullOrWhiteSpace(_feed.Generator))
+                root.Add(new XElement(ns + "generator", _feed.Generator));
+
+
+            if (_feed.UpdatedDate != DateTime.MinValue)
+                root.Add(new XElement(ns + "updated", _feed.UpdatedDate.ToString(DateTimeRfc3339Format)));
+
+            if (_feed.PublishedDate != DateTime.MinValue)
+                root.Add(new XElement(ns + "published", _feed.PublishedDate.ToString(DateTimeRfc3339Format)));
 
             foreach (var feedEntry in _feed.FeedEntries)
             {

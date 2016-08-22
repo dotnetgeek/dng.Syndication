@@ -5,19 +5,31 @@ namespace dng.Syndication
 
     public class FeedEntry
     {
+        /// <summary>
+        /// Title of the item 
+        /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// The hyperlink to the item 
+        /// </summary>
         public Uri Link { get; set; }
 
-        public string Id { get; set; }
 
         public string Summary { get; set; }
 
+        /// <summary>
+        /// Content the item
+        /// </summary>
         public string Content { get; set; }
 
         public Author Author { get; set; }
+
+        /// <summary>
+        /// Last publication date for the item
+        /// </summary>
         public DateTime PublishDate { get; set; }
 
-        public DateTime Updated{ get; set; }
+        public DateTime Updated { get; set; }
     }
 }
