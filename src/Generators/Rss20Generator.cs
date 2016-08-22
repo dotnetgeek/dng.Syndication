@@ -18,6 +18,14 @@ namespace dng.Syndication.Generators
             _feed = feed;
         }
 
+        private string FormatDate(DateTime date)
+        {
+           return string.Concat(
+               date.ToString("ddd',' d MMM yyyy HH':'mm':'ss", new CultureInfo("en-US")),
+               " ",
+               date.ToString("zzzz").Replace(":", ""));
+        }
+
         public string Process()
         {
             XNamespace atomNamespace = "http://www.w3.org/2005/Atom";
@@ -44,8 +52,21 @@ namespace dng.Syndication.Generators
 
             if (!string.IsNullOrWhiteSpace(_feed.Copyright))
                 channel.Add(new XElement("copyright", _feed.Copyright));
-            doc.Root.Add(channel);
 
+            if (!string.IsNullOrWhiteSpace(_feed.Generator))
+                channel.Add(new XElement("generator", _feed.Generator));
+
+            if (!string.IsNullOrWhiteSpace(_feed.Generator))
+                channel.Add(new XElement("language", _feed.Language));
+
+            if (_feed.PublishedDate != DateTime.MinValue)
+                channel.Add(new XElement("pubDate", FormatDate(_feed.PublishedDate)));
+
+            if (_feed.UpdatedDate != DateTime.MinValue)
+                channel.Add(new XElement("lastBuildDate", FormatDate(_feed.UpdatedDate)));
+
+
+            doc.Root.Add(channel);
 
             foreach (var feedEntry in _feed.FeedEntries)
             {
@@ -58,17 +79,10 @@ namespace dng.Syndication.Generators
 
                 itemElement.Add(new XElement("guid", feedEntry.Link));
 
-
+                itemElement.Add(new XElement("link", feedEntry.Link));
 
                 if (feedEntry.PublishDate != DateTime.MinValue)
-                {
-                    var dateFmt = string.Concat(
-                        feedEntry.PublishDate.ToString("ddd',' d MMM yyyy HH':'mm':'ss", new CultureInfo("en-US")),
-                        " ",
-                        feedEntry.PublishDate.ToString("zzzz").Replace(":", ""));
-
-                    itemElement.Add(new XElement("pubDate", dateFmt));
-                }
+                    itemElement.Add(new XElement("pubDate", FormatDate(feedEntry.PublishDate)));
 
                 channel.Add(itemElement);
             }
