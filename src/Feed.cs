@@ -16,12 +16,12 @@ namespace dng.Syndication
         public Author Author { get; set; }
 
         /// <summary>
-        /// The hyperlink to the channel
+        /// Defines the hyperlink to the channel
         /// </summary>
         public Uri Link { get; set; }
 
         /// <summary>
-        /// The last-modified date of the content of the feed
+        /// Defines the last-modified date of the content of the feed
         /// </summary>
         public DateTime UpdatedDate { get; set; }
 
@@ -41,12 +41,12 @@ namespace dng.Syndication
         public string Copyright { get; set; }
 
         /// <summary>
-        /// The last publication date for the content of the feed
+        /// Defines the publication date for the content of the feed
         /// </summary>
         public DateTime PublishedDate { get; set; }
 
         /// <summary>
-        /// The program used to generate the feed
+        /// Specifies the program used to generate the feed
         /// </summary>
         public string Generator { get; set; }
 

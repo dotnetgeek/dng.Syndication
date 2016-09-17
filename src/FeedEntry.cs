@@ -23,6 +23,9 @@ namespace dng.Syndication
         /// </summary>
         public string Content { get; set; }
 
+        /// <summary>
+        /// Author is used to specify the e-mail address of the author of an item
+        /// </summary>
         public Author Author { get; set; }
 
         /// <summary>
