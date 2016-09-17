@@ -52,7 +52,7 @@ namespace dng.Syndication.Generators
             }
 
             if (!string.IsNullOrWhiteSpace(_feed.Copyright))
-                root.Add(new XElement("rights", _feed.Copyright));
+                root.Add(new XElement(ns + "rights", _feed.Copyright));
 
             if (!string.IsNullOrWhiteSpace(_feed.Generator))
                 root.Add(new XElement(ns + "generator", _feed.Generator));
@@ -88,7 +88,6 @@ namespace dng.Syndication.Generators
 
                     itemElement.Add(author);
                 }
-
                 else if (_feed.Author != null)
                 {
                     var author = new XElement(ns + "author");
@@ -98,9 +97,9 @@ namespace dng.Syndication.Generators
                     if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
                         author.Add(new XElement(ns + "email", _feed.Author.Email));
 
-                    itemElement.Add(_feed);
+                    itemElement.Add(author);
                 }
-
+                
                 itemElement.Add(new XElement(ns + "id", feedEntry.Link));
 
                 if (feedEntry.Updated != DateTime.MinValue)

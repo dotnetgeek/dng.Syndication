@@ -62,12 +62,13 @@ namespace dng.Syndication.Tests
                            "<id>http://www.dotnetgeek.de/rss</id>" +
                            "<link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
                            "<author><name>Daniel</name><email>email@email.em</email></author>" +
-                           "<rights xmlns=\"\">2016 @ www.dotnetgeek.com</rights>" +
+                           "<rights>2016 @ www.dotnetgeek.com</rights>" +
                            "<generator>dng.Syndication</generator>" +
                            "<updated>2016-08-16T00:00:00Z</updated>" +
                            "<entry><title>First Entry</title>" +
                            "<link href=\"http://www.dotnetgeek.com/first-entry\" />" +
                            "<summary>summary</summary><content>Content</content>" +
+                           "<author><name>Daniel</name><email>email@email.em</email></author>" +
                            "<id>http://www.dotnetgeek.com/first-entry</id>" +
                            "<updated>2016-08-16T00:00:00Z</updated>" +
                            "<published>2016-08-16T00:00:00Z</published></entry></feed>";
