@@ -89,6 +89,18 @@ namespace dng.Syndication.Generators
                     itemElement.Add(author);
                 }
 
+                else if (_feed.Author != null)
+                {
+                    var author = new XElement(ns + "author");
+                    if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
+                        author.Add(new XElement(ns + "name", _feed.Author.Name));
+
+                    if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
+                        author.Add(new XElement(ns + "email", _feed.Author.Email));
+
+                    itemElement.Add(_feed);
+                }
+
                 itemElement.Add(new XElement(ns + "id", feedEntry.Link));
 
                 if (feedEntry.Updated != DateTime.MinValue)
