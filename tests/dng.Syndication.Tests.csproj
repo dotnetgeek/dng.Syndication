@@ -68,8 +68,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomAtomGeneratorTests.cs" />
     <Compile Include="AtomGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CustomRss20GeneratorTests.cs" />
     <Compile Include="Rss20GeneratorTests.cs" />
   </ItemGroup>
   <ItemGroup>

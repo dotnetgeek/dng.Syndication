@@ -28,7 +28,7 @@ namespace dng.Syndication
         /// <summary>
         /// Each FeedEntries element defines an article or "story" in an RSS feed.
         /// </summary>
-        public IList<FeedEntry> FeedEntries { get; set; }
+        public IList<IFeedEntry> FeedEntries { get; set; }
 
         /// <summary>
         /// Specifies the language the feed is written in

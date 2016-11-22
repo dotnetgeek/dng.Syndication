@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
+using dng.Syndication.Attributes;
 
 namespace dng.Syndication.Generators
 {
@@ -18,13 +21,44 @@ namespace dng.Syndication.Generators
             _feed = feed;
         }
 
+        private void FormatPropertyValue(XDocument doc, XElement root, Feed feed, Type type, XNamespace @namespace, string name, string attribute, object value)
+        {
+            if (type == typeof(DateTime))
+            {
+                root.Add(new XElement(@namespace + name, string.IsNullOrWhiteSpace(attribute) ? (object)((DateTime)value).ToString(DateTimeRfc3339Format) : new XAttribute(attribute, ((DateTime)value).ToString(DateTimeRfc3339Format))));
+            }
+            else if (type == typeof(Author))
+            {
+                if ((Author)value == null)
+                    value = feed.Author;
+
+                if ((Author)value != null)
+                {
+                    var author = new XElement(@namespace + "author");
+                    if (!string.IsNullOrWhiteSpace(((Author)value).Name))
+                        author.Add(new XElement(@namespace + "name", ((Author)value).Name));
+
+                    if (!string.IsNullOrWhiteSpace(((Author)value).Name))
+                        author.Add(new XElement(@namespace + "email", ((Author)value).Email));
+
+                    root.Add(author);
+                }
+
+                return;
+            }
+            else
+            {
+                root.Add(new XElement(@namespace + name, string.IsNullOrWhiteSpace(attribute) ? value : new XAttribute(attribute, value)));
+            }
+        }
+
         public string Process()
         {
             var ns = XNamespace.Get("http://www.w3.org/2005/Atom");
 
             var root = new XElement(ns + "feed");
             var doc = new XDocument(new XDeclaration("1.0", "utf-8", null), root);
-
+            
             root.Add(new XElement(ns + "title", _feed.Title, new XAttribute("type", "text")));
             root.Add(new XElement(ns + "subtitle", _feed.Description, new XAttribute("type", "text")));
             
@@ -67,46 +101,37 @@ namespace dng.Syndication.Generators
             foreach (var feedEntry in _feed.FeedEntries)
             {
                 var itemElement = new XElement(ns + "entry");
-                itemElement.Add(new XElement(ns + "title", feedEntry.Title));
 
-                itemElement.Add(new XElement(ns + "link", new XAttribute("href", feedEntry.Link)));
+                var properties = feedEntry.GetType().GetProperties();
 
-                if (!string.IsNullOrWhiteSpace(feedEntry.Summary))
-                    itemElement.Add(new XElement(ns + "summary", feedEntry.Summary));
-
-                if (!string.IsNullOrWhiteSpace(feedEntry.Content))
-                    itemElement.Add(new XElement(ns + "content", feedEntry.Content));
-
-                if (feedEntry.Author != null)
+                foreach (var property in properties)
                 {
-                    var author = new XElement(ns + "author");
-                    if (!string.IsNullOrWhiteSpace(feedEntry.Author.Name))
-                        author.Add(new XElement(ns + "name", feedEntry.Author.Name));
+                    var attributes = property.GetCustomAttributes(typeof(AtomPropertyAttribute), false).Cast<AtomPropertyAttribute>();
 
-                    if (!string.IsNullOrWhiteSpace(feedEntry.Author.Name))
-                        author.Add(new XElement(ns + "email", feedEntry.Author.Email));
+                    var value = property.GetValue(feedEntry);
 
-                    itemElement.Add(author);
+                    if (attributes != null && attributes.Any())
+                    {
+                        foreach (var attribute in attributes.Where(w => !w.Ignore))
+                        {
+
+                            XNamespace customNamespace = null;
+                            if (!string.IsNullOrWhiteSpace(attribute.Namespace))
+                            {
+                                customNamespace = attribute.Url.ToString();
+
+                                if (root.Attribute(XNamespace.Xmlns + attribute.Namespace) == null)
+                                    root.Add(new XAttribute(XNamespace.Xmlns + attribute.Namespace, customNamespace));
+                            }
+
+                            FormatPropertyValue(doc, itemElement, _feed, property.PropertyType, customNamespace ?? ns, attribute.Name, attribute.AttributeName, value);
+                        }
+                    }
+                    else
+                    {
+                        FormatPropertyValue(doc, itemElement, _feed, property.PropertyType, ns, property.Name.ToLowerInvariant(), null, value);
+                    }
                 }
-                else if (_feed.Author != null)
-                {
-                    var author = new XElement(ns + "author");
-                    if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
-                        author.Add(new XElement(ns + "name", _feed.Author.Name));
-
-                    if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
-                        author.Add(new XElement(ns + "email", _feed.Author.Email));
-
-                    itemElement.Add(author);
-                }
-                
-                itemElement.Add(new XElement(ns + "id", feedEntry.Link));
-
-                if (feedEntry.Updated != DateTime.MinValue)
-                    itemElement.Add(new XElement(ns + "updated", feedEntry.Updated.ToString(DateTimeRfc3339Format)));
-
-                if (feedEntry.PublishDate != DateTime.MinValue)
-                    itemElement.Add(new XElement(ns + "published", feedEntry.PublishDate.ToString(DateTimeRfc3339Format)));
 
                 root.Add(itemElement);
             }

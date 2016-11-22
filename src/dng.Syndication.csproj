@@ -40,7 +40,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,12 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AtomIgnoreAttribute.cs" />
+    <Compile Include="Attributes\BasePropertyAttribute.cs" />
+    <Compile Include="Attributes\AtomPropertyAttribute.cs" />
+    <Compile Include="Attributes\Rss20IgnoreAttribute.cs" />
+    <Compile Include="Attributes\Rss20PropertyAttribute.cs" />
     <Compile Include="Author.cs" />
     <Compile Include="Feed.cs" />
     <Compile Include="FeedEntry.cs" />
     <Compile Include="Generators\AtomGenerator.cs" />
     <Compile Include="Generators\Rss20Generator.cs" />
     <Compile Include="Generators\Utf8StringWriter.cs" />
+    <Compile Include="IFeedEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
