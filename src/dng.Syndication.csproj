@@ -63,6 +63,7 @@
     <Compile Include="Generators\Utf8StringWriter.cs" />
     <Compile Include="IFeed.cs" />
     <Compile Include="IFeedEntry.cs" />
+    <Compile Include="Image.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

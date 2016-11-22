@@ -21,7 +21,7 @@ namespace dng.Syndication.Generators
             _feed = feed;
         }
 
-        private void FormatPropertyValue(XDocument doc, XElement root, Feed feed, Type type, XNamespace @namespace, string name, string attribute, object value)
+        private void FormatPropertyValue(XElement root, Feed feed, Type type, XNamespace @namespace, string name, string attribute, object value)
         {
             if (type == typeof(DateTime))
             {
@@ -85,6 +85,18 @@ namespace dng.Syndication.Generators
                 root.Add(author);
             }
 
+            if (_feed.Logo != null)
+            {
+                if (_feed.Logo.Url != null)
+                    root.Add(new XElement(ns + "logo", _feed.Logo.Url));
+            }
+
+            if (_feed.Icon != null)
+            {
+                if (_feed.Icon.Url != null)
+                    root.Add(new XElement(ns + "icon", _feed.Icon.Url));
+            }
+
             if (!string.IsNullOrWhiteSpace(_feed.Copyright))
                 root.Add(new XElement(ns + "rights", _feed.Copyright));
 
@@ -124,12 +136,12 @@ namespace dng.Syndication.Generators
                                     root.Add(new XAttribute(XNamespace.Xmlns + attribute.Namespace, customNamespace));
                             }
 
-                            FormatPropertyValue(doc, itemElement, _feed, property.PropertyType, customNamespace ?? ns, attribute.Name, attribute.AttributeName, value);
+                            FormatPropertyValue(itemElement, _feed, property.PropertyType, customNamespace ?? ns, attribute.Name, attribute.AttributeName, value);
                         }
                     }
                     else
                     {
-                        FormatPropertyValue(doc, itemElement, _feed, property.PropertyType, ns, property.Name.ToLowerInvariant(), null, value);
+                        FormatPropertyValue(itemElement, _feed, property.PropertyType, ns, property.Name.ToLowerInvariant(), null, value);
                     }
                 }
 

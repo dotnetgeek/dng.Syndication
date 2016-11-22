@@ -54,5 +54,15 @@ namespace dng.Syndication
         /// Describes the feed
         /// </summary>
         public string Description { get; set; }
+        
+        /// <summary>
+        /// Specifies a GIF, JPEG or PNG image that can be displayed with the channel
+        /// </summary>
+        public Image Logo { get; set; }
+
+        /// <summary>
+        /// Identifies a small image which provides iconic visual identification for the feed. Icons should be square.
+        /// </summary>
+        public Image Icon { get; set; }
     }
 }

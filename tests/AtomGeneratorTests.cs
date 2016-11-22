@@ -26,14 +26,15 @@ namespace dng.Syndication.Tests
                 {
                     Name = "Daniel",
                     Email = "email@email.em"
-
                 },
                 Copyright = "2016 @ www.dotnetgeek.com",
                 Description = "Dotnet relevant thinks",
                 Generator = "dng.Syndication",
                 Language = "de",
                 UpdatedDate = new DateTime(2016, 08, 16),
-                Link = new Uri("http://www.dotnetgeek.de/rss")
+                Link = new Uri("http://www.dotnetgeek.de/rss"),
+                Logo = new Image(new Uri("http://placehold.it/88x44")),
+                Icon = new Image(new Uri("http://placehold.it/16x16")),
             };
 
             feed.FeedEntries = new List<IFeedEntry>
@@ -62,6 +63,8 @@ namespace dng.Syndication.Tests
                            "<id>http://www.dotnetgeek.de/rss</id>" +
                            "<link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
                            "<author><name>Daniel</name><email>email@email.em</email></author>" +
+                           "<logo>http://placehold.it/88x44</logo>" +
+                           "<icon>http://placehold.it/16x16</icon>" +
                            "<rights>2016 @ www.dotnetgeek.com</rights>" +
                            "<generator>dng.Syndication</generator>" +
                            "<updated>2016-08-16T00:00:00Z</updated>" +
@@ -74,6 +77,8 @@ namespace dng.Syndication.Tests
                            "<updated>2016-08-16T00:00:00Z</updated></entry></feed>";
 
             Assert.Equal(expected, _feedXml);
+
+            System.IO.File.WriteAllText("..\\..\\sample_atom.xml", _feedXml);
         }
     }
 }

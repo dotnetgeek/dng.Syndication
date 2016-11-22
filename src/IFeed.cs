@@ -58,5 +58,9 @@ namespace dng.Syndication
         /// Describes the feed
         /// </summary>
         string Description { get; set; }
+
+        Image Logo { get; set; }
+        
+        Image Icon { get; set; }
     }
 }

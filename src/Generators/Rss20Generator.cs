@@ -29,15 +29,20 @@ namespace dng.Syndication.Generators
                date.ToString("zzzz").Replace(":", ""));
         }
 
-        private object FormatPropertyValue(PropertyInfo property, object value)
+        private void FormatPropertyValue(XElement root, Type type, XNamespace @namespace, string name, object value)
         {
-            if (property.PropertyType == typeof(DateTime))
-                return FormatDate((DateTime)value);
-
-            if (property.PropertyType == typeof(Author))
-                return $"{((Author)value).Email} ({((Author)value).Name})";
-
-            return value;
+            if (type == typeof(DateTime))
+            {
+                root.Add(new XElement(@namespace == null ? name : @namespace + name, FormatDate((DateTime)value)));
+            }
+            else if (type == typeof(Author))
+            {
+                root.Add(new XElement(@namespace == null ? name : @namespace + name, $"{((Author)value).Email} ({((Author)value).Name})"));
+            }
+            else
+            {
+                root.Add(new XElement(@namespace == null ? name : @namespace + name, value));
+            }
         }
 
         public string Process()
@@ -63,6 +68,30 @@ namespace dng.Syndication.Generators
             channel.Add(new XElement("link", _feed.Link));
 
             channel.Add(new XElement("description", _feed.Description));
+
+            if (_feed.Logo != null)
+            {
+                var image = new XElement("image");
+                if (_feed.Logo.Url != null)
+                    image.Add(new XElement("url", _feed.Logo.Url));
+
+                if (!string.IsNullOrWhiteSpace(_feed.Logo.Title))
+                    image.Add(new XElement("title", _feed.Logo.Title));
+
+                if (_feed.Logo.Link != null)
+                    image.Add(new XElement("link", _feed.Logo.Link));
+
+                if (!string.IsNullOrWhiteSpace(_feed.Logo.Description))
+                    image.Add(new XElement("description", _feed.Logo.Description));
+
+                if (_feed.Logo.Height.HasValue)
+                    image.Add(new XElement("height", _feed.Logo.Height));
+
+                if (_feed.Logo.Width.HasValue)
+                    image.Add(new XElement("width", _feed.Logo.Width));
+
+                channel.Add(image);
+            }
 
             if (!string.IsNullOrWhiteSpace(_feed.Copyright))
                 channel.Add(new XElement("copyright", _feed.Copyright));
@@ -91,7 +120,8 @@ namespace dng.Syndication.Generators
                 {
                     var attributes = property.GetCustomAttributes(typeof(Rss20PropertyAttribute), false).Cast<Rss20PropertyAttribute>();
 
-                    var value = FormatPropertyValue(property, property.GetValue(feedEntry));
+                    //var value = FormatPropertyValue(property, property.GetValue(feedEntry));
+                    var value = property.GetValue(feedEntry);
 
                     if (attributes != null && attributes.Any())
                     {
@@ -106,12 +136,12 @@ namespace dng.Syndication.Generators
                                     doc.Root.Add(new XAttribute(XNamespace.Xmlns + attribute.Namespace, customNamespace));
                             }
 
-                            itemElement.Add(new XElement(string.IsNullOrWhiteSpace(attribute.Namespace) ? attribute.Name : customNamespace + attribute.Name, value));
+                            FormatPropertyValue(itemElement, property.PropertyType, customNamespace, attribute.Name, value);
                         }
                     }
                     else
                     {
-                        itemElement.Add(new XElement(property.Name.ToLowerInvariant(), value));
+                        FormatPropertyValue(itemElement, property.PropertyType, null, property.Name.ToLowerInvariant(), value);
                     }
                 }
 

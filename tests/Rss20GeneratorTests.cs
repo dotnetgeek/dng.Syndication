@@ -34,6 +34,7 @@ namespace dng.Syndication.Tests
                 Language = "de",
                 UpdatedDate = new DateTime(2016, 08, 16),
                 Link = new Uri("http://www.dotnetgeek.de/rss"),
+                Logo = new Image(new Uri("http://placehold.it/88x31"), "dotnetgeek feed", new Uri("http://www.dotnetgeek.de/rss")),
                 FeedEntries = new List<IFeedEntry>
                 {
                     new FeedEntry
@@ -61,6 +62,7 @@ namespace dng.Syndication.Tests
                            "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
                            "<link>http://www.dotnetgeek.de/rss</link>" +
                            "<description>Dotnet relevant topics</description>" +
+                           "<image><url>http://placehold.it/88x31</url><title>dotnetgeek feed</title><link>http://www.dotnetgeek.de/rss</link></image>" +
                            "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
                            "<generator>dng.Syndication</generator>" +
                            "<language>de</language>" +
@@ -71,6 +73,8 @@ namespace dng.Syndication.Tests
                            "</item></channel></rss>";
 
             Assert.Equal(expected, _feedXml);
+
+            System.IO.File.WriteAllText("..\\..\\sample_rss20.xml", _feedXml);
         }
     }
 }
