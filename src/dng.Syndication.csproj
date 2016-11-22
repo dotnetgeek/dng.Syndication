@@ -61,6 +61,7 @@
     <Compile Include="Generators\AtomGenerator.cs" />
     <Compile Include="Generators\Rss20Generator.cs" />
     <Compile Include="Generators\Utf8StringWriter.cs" />
+    <Compile Include="IFeed.cs" />
     <Compile Include="IFeedEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
