@@ -50,6 +50,10 @@ This is the main object which description the general information about the feed
 | PublishDate | pubDate | published | Last publication date for the item. |
 | Updated | - | updated | Defines the last-modified date of the content of the feed. |
 
+# Validation
+[![Valid RSS](/valid-rss-rogers.png)](http://validator.w3.org/feed/check.cgi?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwdcossey%2Fdng.Syndication%2Fmaster%2Ftests%2Fsample_rss20.xml)
+
+[![Valid Atom 1.0](/valid-atom.png)](http://validator.w3.org/feed/check.cgi?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwdcossey%2Fdng.Syndication%2Fmaster%2Ftests%2Fsample_atom.xml)
 
 # ToDo
 

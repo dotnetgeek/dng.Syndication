@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
+using dng.Syndication.Attributes;
 
 namespace dng.Syndication.Generators
 {
@@ -24,6 +27,22 @@ namespace dng.Syndication.Generators
                date.ToString("ddd',' d MMM yyyy HH':'mm':'ss", new CultureInfo("en-US")),
                " ",
                date.ToString("zzzz").Replace(":", ""));
+        }
+
+        private void FormatPropertyValue(XElement root, Type type, XNamespace @namespace, string name, object value)
+        {
+            if (type == typeof(DateTime))
+            {
+                root.Add(new XElement(@namespace == null ? name : @namespace + name, FormatDate((DateTime)value)));
+            }
+            else if (type == typeof(Author))
+            {
+                root.Add(new XElement(@namespace == null ? name : @namespace + name, $"{((Author)value).Email} ({((Author)value).Name})"));
+            }
+            else
+            {
+                root.Add(new XElement(@namespace == null ? name : @namespace + name, value));
+            }
         }
 
         public string Process()
@@ -50,6 +69,30 @@ namespace dng.Syndication.Generators
 
             channel.Add(new XElement("description", _feed.Description));
 
+            if (_feed.Logo != null)
+            {
+                var image = new XElement("image");
+                if (_feed.Logo.Url != null)
+                    image.Add(new XElement("url", _feed.Logo.Url));
+
+                if (!string.IsNullOrWhiteSpace(_feed.Logo.Title))
+                    image.Add(new XElement("title", _feed.Logo.Title));
+
+                if (_feed.Logo.Link != null)
+                    image.Add(new XElement("link", _feed.Logo.Link));
+
+                if (!string.IsNullOrWhiteSpace(_feed.Logo.Description))
+                    image.Add(new XElement("description", _feed.Logo.Description));
+
+                if (_feed.Logo.Height.HasValue)
+                    image.Add(new XElement("height", _feed.Logo.Height));
+
+                if (_feed.Logo.Width.HasValue)
+                    image.Add(new XElement("width", _feed.Logo.Width));
+
+                channel.Add(image);
+            }
+
             if (!string.IsNullOrWhiteSpace(_feed.Copyright))
                 channel.Add(new XElement("copyright", _feed.Copyright));
 
@@ -65,24 +108,42 @@ namespace dng.Syndication.Generators
             if (_feed.UpdatedDate != DateTime.MinValue)
                 channel.Add(new XElement("lastBuildDate", FormatDate(_feed.UpdatedDate)));
 
-
             doc.Root.Add(channel);
 
             foreach (var feedEntry in _feed.FeedEntries)
             {
+                var properties = feedEntry.GetType().GetProperties();
+
                 var itemElement = new XElement("item");
-                itemElement.Add(new XElement("title", feedEntry.Title));
-                itemElement.Add(new XElement("description", feedEntry.Content));
 
-                if (feedEntry.Author != null)
-                    itemElement.Add(new XElement("author", $"{feedEntry.Author.Email} ({feedEntry.Author.Name})"));
+                foreach (var property in properties.Where(w => w.GetValue(feedEntry) != null))
+                {
+                    var attributes = property.GetCustomAttributes(typeof(Rss20PropertyAttribute), false).Cast<Rss20PropertyAttribute>();
 
-                itemElement.Add(new XElement("guid", feedEntry.Link));
+                    //var value = FormatPropertyValue(property, property.GetValue(feedEntry));
+                    var value = property.GetValue(feedEntry);
 
-                itemElement.Add(new XElement("link", feedEntry.Link));
+                    if (attributes != null && attributes.Any())
+                    {
+                        foreach (var attribute in attributes.Where(w => !w.Ignore))
+                        {
+                            XNamespace customNamespace = null;
+                            if (!string.IsNullOrWhiteSpace(attribute.Namespace))
+                            {
+                                customNamespace = attribute.Url.ToString();
 
-                if (feedEntry.PublishDate != DateTime.MinValue)
-                    itemElement.Add(new XElement("pubDate", FormatDate(feedEntry.PublishDate)));
+                                if (doc.Root.Attribute(XNamespace.Xmlns + attribute.Namespace) == null)
+                                    doc.Root.Add(new XAttribute(XNamespace.Xmlns + attribute.Namespace, customNamespace));
+                            }
+
+                            FormatPropertyValue(itemElement, property.PropertyType, customNamespace, attribute.Name, value);
+                        }
+                    }
+                    else
+                    {
+                        FormatPropertyValue(itemElement, property.PropertyType, null, property.Name.ToLowerInvariant(), value);
+                    }
+                }
 
                 channel.Add(itemElement);
             }
