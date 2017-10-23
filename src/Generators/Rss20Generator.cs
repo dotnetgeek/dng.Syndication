@@ -84,6 +84,14 @@ namespace dng.Syndication.Generators
                 if (feedEntry.PublishDate != DateTime.MinValue)
                     itemElement.Add(new XElement("pubDate", FormatDate(feedEntry.PublishDate)));
 
+                if (feedEntry.Enclosure != null)
+                {
+                    itemElement.Add(new XElement("enclosure", 
+                        new XAttribute("url", feedEntry.Enclosure.Url),
+                        new XAttribute("length", feedEntry.Enclosure.Length),
+                        new XAttribute("type", feedEntry.Enclosure.MediaType)));
+                }
+
                 channel.Add(itemElement);
             }
 
