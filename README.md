@@ -6,7 +6,6 @@ A simple feed generator which can be used to create valid RSS 2.0 and Atom feeds
 # How to use
 
 
-
 # Objects and Fields description
 
 
@@ -49,7 +48,7 @@ This is the main object which description the general information about the feed
 | Author | author | author | Author is used to specify the e-mail address of the author of an item. |
 | PublishDate | pubDate | published | Last publication date for the item. |
 | Updated | - | updated | Defines the last-modified date of the content of the feed. |
-
+| Enclosure | enclosure  | - | 
 
 # ToDo
 

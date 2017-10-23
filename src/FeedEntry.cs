@@ -34,5 +34,8 @@ namespace dng.Syndication
         public DateTime PublishDate { get; set; }
 
         public DateTime Updated { get; set; }
+
+        //http://www.rssboard.org/rss-specification#ltenclosuregtSubelementOfLtitemgt
+        public Enclosure Enclosure { get; set; }
     }
 }
