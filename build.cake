@@ -105,16 +105,20 @@ Task("Publish").
     IsDependentOn("Pack").Does(()=> {
 
     var nugetApiKey = EnvironmentVariable("nuget-apikey") ?? "";
+    var nugetApiServer = EnvironmentVariable("nuget-server") ?? "";
 
     if (string.IsNullOrEmpty(nugetApiKey))
         throw new InvalidOperationException("Could not resolve Nuget API key.");
+
+    if (string.IsNullOrEmpty(nugetApiServer))
+        throw new InvalidOperationException("Could not resolve Nuget Server.");
 
     var packages = GetFiles("./artifacts/*.nupkg");
     foreach(var package in packages)
     {
         NuGetPush(package, new NuGetPushSettings {
             ApiKey = nugetApiKey,
-            Source = "https://www.nuget.org/api/v3/package"
+            Source = nugetApiServer
         });
     }
 });
