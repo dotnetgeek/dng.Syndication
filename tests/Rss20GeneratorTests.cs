@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using dng.Syndication;
 using dng.Syndication.Generators;
 using Xunit;
 
@@ -54,20 +53,20 @@ namespace dng.Syndication.Tests
         [Fact]
         public void CreatedFeedIsAsExpected()
         {
-            var expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                           "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" +
-                           "<channel><title>dotnetgeek feed</title>" +
-                           "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
-                           "<link>http://www.dotnetgeek.de/rss</link>" +
-                           "<description>Dotnet relevant topics</description>" +
-                           "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
-                           "<generator>dng.Syndication</generator>" +
-                           "<language>de</language>" +
-                           "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
-                           "<item><title>First Entry</title><description>Content</description>" +
-                           "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
-                           "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
-                           "</item></channel></rss>";
+            const string expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                                    "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" +
+                                    "<channel><title>dotnetgeek feed</title>" +
+                                    "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
+                                    "<link>http://www.dotnetgeek.de/rss</link>" +
+                                    "<description>Dotnet relevant topics</description>" +
+                                    "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
+                                    "<generator>dng.Syndication</generator>" +
+                                    "<language>de</language>" +
+                                    "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
+                                    "<item><title>First Entry</title><description>Content</description>" +
+                                    "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
+                                    "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
+                                    "</item></channel></rss>";
 
             Assert.Equal(expected, _feedXml);
         }
