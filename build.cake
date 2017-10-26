@@ -21,6 +21,9 @@ var configuration = Argument("configuration", "Release");
 Task("Clean")
     .Does(() =>
 {
+    // Clean solution directories.
+    Information("Cleaning directories and files");
+
     CleanDirectories("./src/**/obj");
 	CleanDirectories("./src/**/bin");
 	CleanDirectories("./tests/**/bin");
@@ -104,16 +107,14 @@ Task("Publish").
     var nugetApiKey = EnvironmentVariable("nuget-apikey") ?? "";
 
     if (string.IsNullOrEmpty(nugetApiKey))
-    {
-        Console.Write("Nuget-Api not definied." + System.Environment.NewLine);
-        return;
-    }
+        throw new InvalidOperationException("Could not resolve Nuget API key.");
 
     var packages = GetFiles("./artifacts/*.nupkg");
     foreach(var package in packages)
     {
         NuGetPush(package, new NuGetPushSettings {
-            ApiKey = nugetApiKey
+            ApiKey = nugetApiKey,
+            Source = "https://www.nuget.org/api/v3/package"
         });
     }
 });
