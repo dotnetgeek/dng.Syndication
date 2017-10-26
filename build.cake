@@ -87,7 +87,7 @@ Task("Test")
     }
 });
 
-Task("Publish")
+Task("Pack")
     .IsDependentOn("Test")
     .Does(() => {
         DotNetCorePack("./src/dng.Syndication.csproj", new DotNetCorePackSettings
@@ -98,16 +98,10 @@ Task("Publish")
         });
     });
 
-Task("Push").
-    IsDependentOn("Publish").Does(()=> {
+Task("Publish").
+    IsDependentOn("Pack").Does(()=> {
 
-    var nugetServer = EnvironmentVariable("nuget-server") ?? "";
     var nugetApiKey = EnvironmentVariable("nuget-apikey") ?? "";
-    if (string.IsNullOrEmpty(nugetServer))
-    {
-        Console.Write("Nuget-Server not definied." + System.Environment.NewLine);
-        return;
-    }
 
     if (string.IsNullOrEmpty(nugetApiKey))
     {
@@ -118,9 +112,7 @@ Task("Push").
     var packages = GetFiles("./artifacts/*.nupkg");
     foreach(var package in packages)
     {
-        Console.Write(package);
         NuGetPush(package, new NuGetPushSettings {
-            Source = nugetServer,
             ApiKey = nugetApiKey
         });
     }
