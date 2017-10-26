@@ -1,116 +1,135 @@
+//////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+//////////////////////////////////////////////////////////////////////
+
 var target = Argument("target", "Default");
+var artifactsDir = "./artifacts"; 
+var testResultDir = artifactsDir + "/test-results";
+var configuration = Argument("configuration", "Release");
 
-#tool "xunit.runner.console"
+//////////////////////////////////////////////////////////////////////
+// PREPARATION
+//////////////////////////////////////////////////////////////////////
 
+// Define directories.
+//var buildDir = Directory("./src/Example/bin") + Directory(configuration);
+
+//////////////////////////////////////////////////////////////////////
+// TASKS
+//////////////////////////////////////////////////////////////////////
 
 Task("Clean")
-	.Does(() =>
+    .Does(() =>
 {
-	CleanDirectories("./src/**/obj");
+    CleanDirectories("./src/**/obj");
 	CleanDirectories("./src/**/bin");
 	CleanDirectories("./tests/**/bin");
 	CleanDirectories("./tests/**/obj");
-	CleanDirectory("./output");
+	CleanDirectories(artifactsDir);
+    CleanDirectories(testResultDir);
 });
 
-Task("Restore-NuGet-Packages")
-  .IsDependentOn("Clean")
-  .Does(() =>
-{
 
-  NuGetRestore("./dng.Syndication.sln");
+Task("Prepare")
+ .IsDependentOn("Clean")
+.Does(()=> 
+{
+    CreateDirectory(artifactsDir);
+});
+
+
+Task("Restore-NuGet-Packages")
+    .IsDependentOn("Prepare")
+    .Does(() =>
+{
+    DotNetCoreRestore("./",new DotNetCoreRestoreSettings
+    {
+        Sources = new [] {
+            "https://api.nuget.org/v3/index.json"
+        }
+    });
 });
 
 Task("Build")
-.IsDependentOn("Restore-NuGet-Packages")
-.Does(() =>
+    .IsDependentOn("Restore-NuGet-Packages")
+    .Does(() =>
 {
-	MSBuild("./src/dng.Syndication.csproj", new MSBuildSettings()
-	.SetConfiguration("Release")
-	.SetMSBuildPlatform(MSBuildPlatform.Automatic)
-	.SetVerbosity(Verbosity.Minimal)
-	.WithProperty("OutDir", "./../output/buildresults/4-6-2")
-	);
+    if(IsRunningOnWindows())
+    {
+      // Use MSBuild
+      MSBuild("./src/dng.Syndication.csproj", settings =>
+        settings.SetConfiguration(configuration));
+    }
+    else
+    {
+      // Use XBuild
+      XBuild("./src/dng.Syndication.csproj", settings =>
+        settings.SetConfiguration(configuration));
+    }
 });
 
 Task("Test")
-  .IsDependentOn("Build")
-  .Does(() => 
-  {
-
-	MSBuild("./tests/dng.Syndication.Tests.csproj", new MSBuildSettings()
-	.SetConfiguration("Release")
-	.SetMSBuildPlatform(MSBuildPlatform.Automatic)
-	.SetVerbosity(Verbosity.Minimal)
-	);
-
-	var xunitReport = Directory("./output/xunit/4-6-2");
-
-	CreateDirectory(xunitReport);
- 
-	
-	XUnit2("./tests/**/bin/Release/*.Tests.dll", new XUnit2Settings 
-	{
-	  ToolPath = "./tools/xunit.runner.console/tools/xunit.console.x86.exe",	
-	  HtmlReport = true,
-	  OutputDirectory = xunitReport
-	});
-  }).Finally(() => 
-  {
-  });
-
-
-Task("Build-4-5-2")
-.IsDependentOn("Restore-NuGet-Packages")
-.Does(() =>
+    .IsDependentOn("Build")
+    .Does(() =>
 {
-	MSBuild("./src/dng.Syndication.csproj", new MSBuildSettings()
-	.SetConfiguration("Release-4-5-2")
-	.SetMSBuildPlatform(MSBuildPlatform.Automatic)
-	.SetVerbosity(Verbosity.Minimal)
-	.WithProperty("OutDir", "./../output/buildresults/4-5-2")
-	);
+    var projects = GetFiles("./tests/**/*.Tests.csproj");
+    foreach(var project in projects)
+    {
+        Console.Write(project);
+        DotNetCoreTest (project.ToString(), new DotNetCoreTestSettings  {
+            ArgumentCustomization = args =>
+                    args.Append("--logger ")
+                    .Append("trx;LogFileName=" +
+                        System.IO.Path.Combine(
+                            MakeAbsolute(Directory(artifactsDir)).FullPath, 
+                            project.GetFilenameWithoutExtension().FullPath + ".trx"))
+        });
+    }
 });
 
-Task("Test-4-5-2")
-  .IsDependentOn("Build-4-5-2")
-  .Does(() => 
-  {
+Task("Publish")
+    .IsDependentOn("Test")
+    .Does(() => {
+        DotNetCorePack("./src/dng.Syndication.csproj", new DotNetCorePackSettings
+        {
+            Configuration = "Release",
+            OutputDirectory = artifactsDir,
+            NoBuild = true
+        });
+    });
 
-	MSBuild("./tests/dng.Syndication.Tests.csproj", new MSBuildSettings()
-	.SetConfiguration("Release-4-5-2")
-	.SetMSBuildPlatform(MSBuildPlatform.Automatic)
-	.SetVerbosity(Verbosity.Minimal)
-	);
+Task("Push").
+    IsDependentOn("Publish").Does(()=> {
 
-	var xunitReport = Directory("./output/xunit/4-5-2");
+    var nugetServer = EnvironmentVariable("nuget-server") ?? "";
+    var nugetApiKey = EnvironmentVariable("nuget-apikey") ?? "";
+    if (string.IsNullOrEmpty(nugetServer))
+    {
+        Console.Write("Nuget-Server not definied." + System.Environment.NewLine);
+        return;
+    }
 
-	CreateDirectory(xunitReport);
- 
-	
-	XUnit2("./tests/**/bin/Release-4-5-2/*.Tests.dll", new XUnit2Settings 
-	{
-	  ToolPath = "./tools/xunit.runner.console/tools/xunit.console.x86.exe",	
-	  HtmlReport = true,
-	  OutputDirectory = xunitReport
-	});
-  }).Finally(() => 
-  {
-  });
+    if (string.IsNullOrEmpty(nugetApiKey))
+    {
+        Console.Write("Nuget-Api not definied." + System.Environment.NewLine);
+        return;
+    }
 
-Task("Pack")
-  .IsDependentOn("Test")
-  .IsDependentOn("Test-4-5-2")
-  .Does(() =>
-  { 
-	CreateDirectory("./output/nuget");
+    var packages = GetFiles("./artifacts/*.nupkg");
+    foreach(var package in packages)
+    {
+        Console.Write(package);
+        NuGetPush(package, new NuGetPushSettings {
+            Source = nugetServer,
+            ApiKey = nugetApiKey
+        });
+    }
+});
 
-	NuGetPack("./dng.Syndication.nuspec", new NuGetPackSettings
-	{ 
-	  OutputDirectory = "./output/nuget"
-	});
-  });
+//////////////////////////////////////////////////////////////////////
+// TASK TARGETS
+//////////////////////////////////////////////////////////////////////
 
-Task("Default").IsDependentOn("Pack");
+Task("Default").IsDependentOn("Test");
 
 RunTarget(target);

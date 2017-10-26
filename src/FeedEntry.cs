@@ -2,7 +2,6 @@
 
 namespace dng.Syndication
 {
-
     public class FeedEntry
     {
         /// <summary>

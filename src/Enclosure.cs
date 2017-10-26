@@ -1,16 +1,35 @@
-﻿namespace dng.Syndication
+﻿using System;
+
+namespace dng.Syndication
 {
     public class Enclosure
     {
-        public Enclosure()
+        public Enclosure(
+            string url,
+            int length,
+            string mediaType)
         {
-            Length = 0;
+            if (string.IsNullOrWhiteSpace(url) || string.IsNullOrWhiteSpace(mediaType) || length < 0)
+                throw new ArgumentException("Url and / or Mediatype missing.");
+
+            Url = url;
+            MediaType = mediaType;
+            Length = length;
         }
 
-        public string Url { get; set; }
+        /// <summary>
+        /// Where the enclosure is located
+        /// </summary>
+        public string Url { get; }
 
-        public int Length { get; set; }
+        /// <summary>
+        /// How big it is in bytes
+        /// </summary>
+        public int Length { get; }
 
-        public string MediaType { get; set; }
+        /// <summary>
+        /// Standard MIME type
+        /// </summary>
+        public string MediaType { get; }
     }
 }

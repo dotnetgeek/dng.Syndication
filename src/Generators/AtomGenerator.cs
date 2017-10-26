@@ -4,18 +4,13 @@ using System.Xml.Linq;
 
 namespace dng.Syndication.Generators
 {
-    public class AtomGenerator
+    public class AtomGenerator : Generator
     {
-        private readonly Feed _feed;
         private const string DateTimeRfc3339Format = "yyyy-MM-dd'T'HH:mm:ssZ";
 
         public AtomGenerator(
-            Feed feed)
+            Feed feed):base(feed)
         {
-            if (feed == null)
-                throw new ArgumentNullException(nameof(feed));
-
-            _feed = feed;
         }
 
         public string Process()
@@ -25,46 +20,46 @@ namespace dng.Syndication.Generators
             var root = new XElement(ns + "feed");
             var doc = new XDocument(new XDeclaration("1.0", "utf-8", null), root);
 
-            root.Add(new XElement(ns + "title", _feed.Title, new XAttribute("type", "text")));
-            root.Add(new XElement(ns + "subtitle", _feed.Description, new XAttribute("type", "text")));
-            
+            root.Add(new XElement(ns + "title", Feed.Title, new XAttribute("type", "text")));
+            root.Add(new XElement(ns + "subtitle", Feed.Description, new XAttribute("type", "text")));
 
-            if (_feed.Link != null)
+
+            if (Feed.Link != null)
             {
-                root.Add(new XElement(ns + "id", _feed.Link));
+                root.Add(new XElement(ns + "id", Feed.Link));
                 root.Add(
                     new XElement(ns + "link",
                         new XAttribute("rel", "self"),
                         new XAttribute("type", "application/rss+xml"),
-                        new XAttribute("href", _feed.Link)));
+                        new XAttribute("href", Feed.Link)));
             }
 
-            if (_feed.Author != null)
+            if (Feed.Author != null)
             {
                 var author = new XElement(ns + "author");
-                if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
-                    author.Add(new XElement(ns + "name", _feed.Author.Name));
+                if (!string.IsNullOrWhiteSpace(Feed.Author.Name))
+                    author.Add(new XElement(ns + "name", Feed.Author.Name));
 
-                if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
-                    author.Add(new XElement(ns + "email", _feed.Author.Email));
+                if (!string.IsNullOrWhiteSpace(Feed.Author.Name))
+                    author.Add(new XElement(ns + "email", Feed.Author.Email));
 
                 root.Add(author);
             }
 
-            if (!string.IsNullOrWhiteSpace(_feed.Copyright))
-                root.Add(new XElement(ns + "rights", _feed.Copyright));
+            if (!string.IsNullOrWhiteSpace(Feed.Copyright))
+                root.Add(new XElement(ns + "rights", Feed.Copyright));
 
-            if (!string.IsNullOrWhiteSpace(_feed.Generator))
-                root.Add(new XElement(ns + "generator", _feed.Generator));
+            if (!string.IsNullOrWhiteSpace(Feed.Generator))
+                root.Add(new XElement(ns + "generator", Feed.Generator));
 
 
-            if (_feed.UpdatedDate != DateTime.MinValue)
-                root.Add(new XElement(ns + "updated", _feed.UpdatedDate.ToString(DateTimeRfc3339Format)));
+            if (Feed.UpdatedDate != DateTime.MinValue)
+                root.Add(new XElement(ns + "updated", Feed.UpdatedDate.ToString(DateTimeRfc3339Format)));
 
-            if (_feed.PublishedDate != DateTime.MinValue)
-                root.Add(new XElement(ns + "published", _feed.PublishedDate.ToString(DateTimeRfc3339Format)));
+            if (Feed.PublishedDate != DateTime.MinValue)
+                root.Add(new XElement(ns + "published", Feed.PublishedDate.ToString(DateTimeRfc3339Format)));
 
-            foreach (var feedEntry in _feed.FeedEntries)
+            foreach (var feedEntry in Feed.FeedEntries)
             {
                 var itemElement = new XElement(ns + "entry");
                 itemElement.Add(new XElement(ns + "title", feedEntry.Title));
@@ -88,18 +83,18 @@ namespace dng.Syndication.Generators
 
                     itemElement.Add(author);
                 }
-                else if (_feed.Author != null)
+                else if (Feed.Author != null)
                 {
                     var author = new XElement(ns + "author");
-                    if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
-                        author.Add(new XElement(ns + "name", _feed.Author.Name));
+                    if (!string.IsNullOrWhiteSpace(Feed.Author.Name))
+                        author.Add(new XElement(ns + "name", Feed.Author.Name));
 
-                    if (!string.IsNullOrWhiteSpace(_feed.Author.Name))
-                        author.Add(new XElement(ns + "email", _feed.Author.Email));
+                    if (!string.IsNullOrWhiteSpace(Feed.Author.Name))
+                        author.Add(new XElement(ns + "email", Feed.Author.Email));
 
                     itemElement.Add(author);
                 }
-                
+
                 itemElement.Add(new XElement(ns + "id", feedEntry.Link));
 
                 if (feedEntry.Updated != DateTime.MinValue)
@@ -111,17 +106,7 @@ namespace dng.Syndication.Generators
                 root.Add(itemElement);
             }
 
-            using (var writer = new Utf8StringWriter())
-            {
-                var xmlWriterSettings = new XmlWriterSettings {Indent = false};
-
-                using (var xmlWriter = XmlWriter.Create(writer, xmlWriterSettings))
-                {
-                    doc.Save(xmlWriter);
-                }
-
-                return writer.ToString();
-            }
+            return ConvertToString(doc);
         }
-   }
+    }
 }
