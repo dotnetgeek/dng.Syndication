@@ -1,0 +1,4 @@
+language: csharp
+solution: dng.Syndication.sln
+script:
+  - ./build.sh
