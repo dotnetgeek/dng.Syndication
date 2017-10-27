@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/80gqbde41fru5wlb/branch/master?svg=true)](https://ci.appveyor.com/project/dotnetgeek/dng-syndication/branch/master)
+
 # dng.Syndication
 
 A simple feed generator which can be used to create valid RSS 2.0 and Atom feeds. It is written in C# and available as NuGet-Package.
