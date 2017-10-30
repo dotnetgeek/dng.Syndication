@@ -1,0 +1,6 @@
+version: 1.3.{build}
+image: Visual Studio 2017
+init:
+- tzutil /s "W. Europe Standard Time"
+build_script:
+- ps: .\build.ps1 -target publish
