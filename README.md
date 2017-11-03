@@ -4,11 +4,11 @@
 
 # dng.Syndication
 
-A simple feed generator which can be used to create valid RSS 2.0 and Atom feeds. It is written in C# and available as NuGet-Package.
+A feed generator which can be used to create valid RSS 2.0 ([spec](http://cyber.harvard.edu/rss/rss.html))  and Atom([spec](https://tools.ietf.org/html/rfc4287)) syndication  feeds. It is written in C# and available as NuGet-Package.
 
-
-# How to use
-
+### Supports:
+* .NET Standard 2.0
+* .NET 4.5.x
 
 # Objects and Fields description
 
@@ -29,7 +29,7 @@ This is the main object which description the general information about the feed
 | UpdatedDate | lastBuildDate | updated |  Defines the last-modified date of the content of the feed. |
 | Generator | generator | generator | The program used to generate the feed |
 | Description | description (*) | subtitle |  Describes the feed |
-| Image | image | - |  Allows an image to be displayed when aggregators present a feed |
+| Image | image | logo |  Allows an image to be displayed when aggregators present a feed |
 | WebMaster | webMaster | - | Defines the e-mail address to the webmaster of the feed | 
 
 
