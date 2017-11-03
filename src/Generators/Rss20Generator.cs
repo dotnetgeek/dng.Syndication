@@ -57,6 +57,28 @@ namespace dng.Syndication.Generators
 
             if (Feed.UpdatedDate != DateTime.MinValue)
                 channel.Add(new XElement("lastBuildDate", FormatDate(Feed.UpdatedDate)));
+    
+            if (!string.IsNullOrWhiteSpace(Feed.WebMaster))
+                channel.Add(new XElement("webMaster", Feed.WebMaster));
+
+            if (Feed.Image != null)
+            {
+                var imageNode = new XElement("image");
+                imageNode.Add(new XElement("url", Feed.Image.Url));
+                imageNode.Add(new XElement("title", Feed.Image.Title));
+                imageNode.Add(new XElement("link", Feed.Image.Link));
+
+                if (!string.IsNullOrWhiteSpace(Feed.Image.Description))
+                    imageNode.Add(new XElement("description", Feed.Image.Description));
+
+                if (Feed.Image.Height.HasValue)
+                    imageNode.Add(new XElement("height", Feed.Image.Height));
+
+                if (Feed.Image.Width.HasValue)
+                    imageNode.Add(new XElement("width", Feed.Image.Width));
+
+                channel.Add(imageNode);
+            }
 
             doc.Root.Add(channel);
 

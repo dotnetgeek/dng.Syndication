@@ -29,6 +29,8 @@ This is the main object which description the general information about the feed
 | UpdatedDate | lastBuildDate | updated |  Defines the last-modified date of the content of the feed. |
 | Generator | generator | generator | The program used to generate the feed |
 | Description | description (*) | subtitle |  Describes the feed |
+| Image | image | - |  Allows an image to be displayed when aggregators present a feed |
+| WebMaster | webMaster | - | Defines the e-mail address to the webmaster of the feed | 
 
 
 * required

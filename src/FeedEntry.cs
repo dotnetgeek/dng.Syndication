@@ -14,7 +14,6 @@ namespace dng.Syndication
         /// </summary>
         public Uri Link { get; set; }
 
-
         public string Summary { get; set; }
 
         /// <summary>

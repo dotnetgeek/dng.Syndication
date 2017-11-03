@@ -54,5 +54,15 @@ namespace dng.Syndication
         /// Describes the feed
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Specifies a GIF, JPEG or PNG image that can be displayed with the channel
+        /// </summary>
+        public Image Image { get; set; }
+
+        /// <summary>
+        /// Defines the e-mail address to the webmaster of the feed
+        /// </summary>
+        public string WebMaster {get; set; }
     }
 }
