@@ -59,6 +59,9 @@ namespace dng.Syndication.Generators
             if (Feed.PublishedDate != DateTime.MinValue)
                 root.Add(new XElement(ns + "published", Feed.PublishedDate.ToString(DateTimeRfc3339Format)));
 
+            if (Feed.Image != null)
+                root.Add(new XElement(ns + "logo", Feed.Image.Url));
+
             foreach (var feedEntry in Feed.FeedEntries)
             {
                 var itemElement = new XElement(ns + "entry");
