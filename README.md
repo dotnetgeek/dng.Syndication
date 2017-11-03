@@ -1,15 +1,15 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/q31a2qtgi4bw3e9b/branch/develop?svg=true)](https://ci.appveyor.com/project/dotnetgeek/dng-syndication-cq83f/branch/develop)
+[![Build status](https://ci.appveyor.com/api/projects/status/q31a2qtgi4bw3e9b/branch/develop?svg=true)](https://ci.appveyor.com/project/dotnetgeek/dng-syndication/branch/develop)
 [![Build status](https://ci.appveyor.com/api/projects/status/80gqbde41fru5wlb/branch/master?svg=true)](https://ci.appveyor.com/project/dotnetgeek/dng-syndication/branch/master)
 [![NuGet](https://img.shields.io/nuget/v/dng.Syndication.svg)](https://www.nuget.org/packages/dng.Syndication)
 ![MIT License](https://img.shields.io/badge/license-MIT-orange.svg)
 
 # dng.Syndication
 
-A simple feed generator which can be used to create valid RSS 2.0 and Atom feeds. It is written in C# and available as NuGet-Package.
+A feed generator which can be used to create valid RSS 2.0 ([spec](http://cyber.harvard.edu/rss/rss.html))  and Atom([spec](https://tools.ietf.org/html/rfc4287)) syndication  feeds. It is written in C# and available as NuGet-Package.
 
-
-# How to use
-
+### Supports:
+* .NET Standard 2.0
+* .NET 4.5.x
 
 # Objects and Fields description
 
@@ -30,6 +30,8 @@ This is the main object which description the general information about the feed
 | UpdatedDate | lastBuildDate | updated |  Defines the last-modified date of the content of the feed. |
 | Generator | generator | generator | The program used to generate the feed |
 | Description | description (*) | subtitle |  Describes the feed |
+| Image | image | logo |  Allows an image to be displayed when aggregators present a feed |
+| WebMaster | webMaster | - | Defines the e-mail address to the webmaster of the feed | 
 
 
 * required
