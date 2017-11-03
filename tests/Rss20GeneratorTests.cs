@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using dng.Syndication;
 using dng.Syndication.Generators;
 using Xunit;
 
@@ -7,16 +8,7 @@ namespace dng.Syndication.Tests
 {
     public class Rss20GeneratorTests
     {
-
-        private readonly string _feedXml;
-
-        public Rss20GeneratorTests()
-        {
-            var rss20Generator = new Rss20Generator(CreateFeed());
-            _feedXml = rss20Generator.Process();
-        }
-        
-        private Feed CreateFeed()
+        private Feed CreateSimpleFeed()
         {
             var feed = new Feed
             {
@@ -51,25 +43,62 @@ namespace dng.Syndication.Tests
         }
 
         [Fact]
-        public void CreatedFeedIsAsExpected()
+        public void Create_a_simple_feed()
         {
-            const string expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                                    "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" +
-                                    "<channel><title>dotnetgeek feed</title>" +
-                                    "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
-                                    "<link>http://www.dotnetgeek.de/rss</link>" +
-                                    "<description>Dotnet relevant topics</description>" +
-                                    "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
-                                    "<generator>dng.Syndication</generator>" +
-                                    "<language>de</language>" +
-                                    "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
-                                    "<item><title>First Entry</title><description>Content</description>" +
-                                    "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
-                                    "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
-                                    "</item></channel></rss>";
+            var rss20Generator = new Rss20Generator(CreateSimpleFeed());
+            var feedXml = rss20Generator.Process();
 
-            Assert.Equal(expected, _feedXml);
+            var expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                           "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" +
+                           "<channel><title>dotnetgeek feed</title>" +
+                           "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
+                           "<link>http://www.dotnetgeek.de/rss</link>" +
+                           "<description>Dotnet relevant topics</description>" +
+                           "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
+                           "<generator>dng.Syndication</generator>" +
+                           "<language>de</language>" +
+                           "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
+                           "<item><title>First Entry</title><description>Content</description>" +
+                           "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
+                           "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
+                           "</item></channel></rss>";
+
+            Assert.Equal(expected, feedXml);
         }
+
+        [Fact]
+        public void Create_a_feed_with_image()
+        {
+            var feed = CreateSimpleFeed();
+            feed.Image = new Image(new Uri("http://www.dotnetgeek.de/logo.png"), "dotnetgeek feed", new Uri("http://www.dotnetgeek.de"));
+
+            var rss20Generator = new Rss20Generator(feed);
+            var feedXml = rss20Generator.Process();
+
+            var expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                           "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" +
+                           "<channel><title>dotnetgeek feed</title>" +
+                           "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
+                           "<link>http://www.dotnetgeek.de/rss</link>" +
+                           "<description>Dotnet relevant topics</description>" +
+                           "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
+                           "<generator>dng.Syndication</generator>" +
+                           "<language>de</language>" +
+                           "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
+                           "<image>" +
+                             "<url>http://www.dotnetgeek.de/logo.png</url>" +
+                             "<title>dotnetgeek feed</title>" +
+                             "<link>http://www.dotnetgeek.de/</link>" +
+                           "</image>" +                           
+                           "<item><title>First Entry</title><description>Content</description>" +
+                           "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
+                           "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
+                           "</item></channel></rss>";
+
+            Assert.Equal(expected, feedXml);
+        }
+   
+   
     }
 }
 
