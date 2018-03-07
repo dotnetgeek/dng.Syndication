@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace dng.Syndication
 {
@@ -27,7 +23,7 @@ namespace dng.Syndication
                 throw new ArgumentException("Parameter Link is required.");
 
             if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException("Parameter Titel is required.");
+                throw new ArgumentException("Parameter Title is required.");
 
             Title = title;
             Link = link;
@@ -50,19 +46,19 @@ namespace dng.Syndication
         /// <para>Required.</para>
         /// <para>Defines the hyperlink to the website that offers the channel</para>
         /// </summary>
-        public Uri Link { get; private  set; }
+        public Uri Link { get; }
 
         /// <summary>
         /// <para>Required.</para>
         /// <para>Defines the text to display if the image could not be shown</para>
         /// </summary>
-        public string Title { get; private set; }
+        public string Title { get; }
 
         /// <summary>
         /// <para>Required.</para>
         /// <para>Specifies the URL to the image</para>
         /// </summary>
-        public Uri Url { get; private set; }
+        public Uri Url { get; }
         
         /// <summary>
         /// <para>Optional.</para>
