@@ -6,7 +6,7 @@ namespace dng.Syndication
     {
         public Enclosure(
             string url,
-            int length,
+            long length,
             string mediaType)
         {
             if (string.IsNullOrWhiteSpace(url) || string.IsNullOrWhiteSpace(mediaType) || length < 0)
@@ -25,7 +25,7 @@ namespace dng.Syndication
         /// <summary>
         /// How big it is in bytes
         /// </summary>
-        public int Length { get; }
+        public long Length { get; }
 
         /// <summary>
         /// Standard MIME type
