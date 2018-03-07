@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using dng.Syndication;
+using System.Globalization;
 using dng.Syndication.Generators;
 using Xunit;
 
@@ -8,32 +8,30 @@ namespace dng.Syndication.Tests
 {
     public class Rss20GeneratorTests
     {
+        private readonly string _dateTimeOffset = new DateTime(2016, 08, 16).ToString("zzzz").Replace(":", "");
+
         private Feed CreateSimpleFeed()
         {
             var feed = new Feed
             {
-                Title = "dotnetgeek feed",
-                Author = new Author
-                {
-                    Name = "Daniel",
-                    Email = "email@email.em"
-                },
+                Title = FeedContent.Plain("dotnetgeek feed"),
+                Author = new Author("Daniel", "email@email.em"),
                 Copyright = "2016 @ www.dotnetgeek.com",
-                Description = "Dotnet relevant topics",
+                Description = FeedContent.Plain("Dotnet relevant topics"),
                 Generator = "dng.Syndication",
-                Language = "de",
+                Language = CultureInfo.GetCultureInfo("de"),
                 UpdatedDate = new DateTime(2016, 08, 16),
                 Link = new Uri("http://www.dotnetgeek.de/rss"),
-                FeedEntries = new List<FeedEntry>
+                FeedEntries = new List<IFeedEntry>
                 {
                     new FeedEntry
                     {
-                        Title = "First Entry",
-                        Content = "Content",
+                        Title =  FeedContent.Plain("First Entry"),
+                        Content =  FeedContent.Plain("Content"),
                         Link = new Uri("http://www.dotnetgeek.com/first-entry"),
-                        Summary = "summary",
+                        Summary =  FeedContent.Plain("summary"),
                         PublishDate = new DateTime(2016, 08, 16),
-                        Updated = new DateTime(2016, 08, 16),
+                        Updated = new DateTime(2016, 08, 16)
                     }
                 }
             };
@@ -53,15 +51,19 @@ namespace dng.Syndication.Tests
                            "<channel><title>dotnetgeek feed</title>" +
                            "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
                            "<link>http://www.dotnetgeek.de/rss</link>" +
-                           "<description>Dotnet relevant topics</description>" +
+                           $"<lastBuildDate>Tue, 16 Aug 2016 00:00:00 {_dateTimeOffset}</lastBuildDate>" +
+                           "<language>de</language>" +
                            "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
                            "<generator>dng.Syndication</generator>" +
-                           "<language>de</language>" +
-                           "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
-                           "<item><title>First Entry</title><description>Content</description>" +
-                           "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
-                           "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
-                           "</item></channel></rss>";
+                           "<description>Dotnet relevant topics</description>" +
+                           "<item>" +
+                           "<title>First Entry</title>" +
+                           "<guid>http://www.dotnetgeek.com/first-entry</guid>" +
+                           "<link>http://www.dotnetgeek.com/first-entry</link>" +
+                           "<description>Content</description>" +
+                           $"<pubDate>Tue, 16 Aug 2016 00:00:00 {_dateTimeOffset}</pubDate>" +
+                           "</item>" +
+                           "</channel></rss>";
 
             Assert.Equal(expected, feedXml);
         }
@@ -80,20 +82,24 @@ namespace dng.Syndication.Tests
                            "<channel><title>dotnetgeek feed</title>" +
                            "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
                            "<link>http://www.dotnetgeek.de/rss</link>" +
-                           "<description>Dotnet relevant topics</description>" +
+                           $"<lastBuildDate>Tue, 16 Aug 2016 00:00:00 {_dateTimeOffset}</lastBuildDate>" +
+                           "<language>de</language>" +
                            "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
                            "<generator>dng.Syndication</generator>" +
-                           "<language>de</language>" +
-                           "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
-                           "<image>" +
+                           "<description>Dotnet relevant topics</description>" +
+                           "<image>" +
                              "<url>http://www.dotnetgeek.de/logo.png</url>" +
                              "<title>dotnetgeek feed</title>" +
                              "<link>http://www.dotnetgeek.de/</link>" +
-                           "</image>" +                           
-                           "<item><title>First Entry</title><description>Content</description>" +
-                           "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
-                           "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
-                           "</item></channel></rss>";
+                           "</image>" +
+                           "<item>" +
+                           "<title>First Entry</title>" +
+                           "<guid>http://www.dotnetgeek.com/first-entry</guid>" +
+                           "<link>http://www.dotnetgeek.com/first-entry</link>" +
+                           "<description>Content</description>" +
+                           $"<pubDate>Tue, 16 Aug 2016 00:00:00 {_dateTimeOffset}</pubDate>" +
+                           "</item>" +
+                           "</channel></rss>";
 
             Assert.Equal(expected, feedXml);
         }
