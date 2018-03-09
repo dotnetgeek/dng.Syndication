@@ -9,8 +9,6 @@ namespace dng.Syndication
 {
     public class Feed : IFeed
     {
-        
-        
         /// <summary>
         /// Name for the feed.
         /// </summary>
@@ -29,8 +27,8 @@ namespace dng.Syndication
         /// Defines the hyperlink to the channel
         /// </summary>
         [AtomProperty("id", Required = true)]
-        [AtomProperty("link", NamespaceUrl = Namespaces.AtomNamespace, Writer = typeof(AtomLinkElementWriter))]
-        [Rss20Property("link", NamespaceUrl = Namespaces.AtomNamespace, Writer = typeof(AtomLinkElementWriter))]
+        [AtomProperty("link", NamespaceUri = Namespaces.AtomNamespace, Writer = typeof(AtomLinkElementWriter))]
+        [Rss20Property("link", NamespaceUri = Namespaces.AtomNamespace, Writer = typeof(AtomLinkElementWriter))]
         [Rss20Property("link", Required = true, Writer = typeof(Rcf3986UriElementFormatter))]
         public Uri Link { get; set; }
 

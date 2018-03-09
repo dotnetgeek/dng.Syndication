@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Xml.Linq;
 using dng.Syndication.Attributes;
 using dng.Syndication.Enums;
@@ -17,6 +20,8 @@ namespace dng.Syndication.Generators
             var atomNamespace = XNamespace.Get(Namespaces.AtomNamespace);
 
             var rootElement = new XElement(atomNamespace + "feed");
+
+            AddFeedNamespaces(rootElement);
 
             var declaration = new XDeclaration("1.0", Encoding.UTF8.HeaderName, null);
 

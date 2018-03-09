@@ -26,6 +26,8 @@ namespace dng.Syndication.Generators
 
             rootElement.Add(new XAttribute(XNamespace.Xmlns + "atom", atomNamespace));
 
+            AddFeedNamespaces(rootElement);
+
             var parentElement = new XElement("channel");
 
             rootElement.Add(ParseProperties(Feed, parentElement));
