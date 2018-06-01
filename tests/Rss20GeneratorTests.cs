@@ -171,7 +171,6 @@ namespace dng.Syndication.Tests
 
             Assert.Equal(expected, feedXml);
         }
-
     }
 }
 

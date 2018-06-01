@@ -151,7 +151,7 @@ namespace dng.Syndication.Tests
 
             Assert.Equal(expected, feedXml);
         }
-
+      
         [Fact]
         public void Create_a_custom_atom_feed()
         {
@@ -183,7 +183,6 @@ namespace dng.Syndication.Tests
 
             Assert.Equal(expected, feedXml);
         }
-
     }
 }
 
