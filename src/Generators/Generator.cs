@@ -34,13 +34,30 @@ namespace dng.Syndication.Generators
 
         public abstract FeedType FeedType { get; }
 
-        protected virtual XElement ParseProperties<TObject>(TObject obj, XElement parentElement = null, XNamespace @namespace = null)
+        protected virtual void AddFeedNamespaces(XElement element)
+        {
+            var namespaceAttributes =
+                Feed.GetType().GetCustomAttributes(typeof(XmlNamespaceAttribute), false)
+                    .Cast<XmlNamespaceAttribute>().ToList();
+
+            if (!namespaceAttributes.Any())
+            {
+                return;
+            }
+
+            foreach (var attribute in namespaceAttributes)
+            {
+                element.SetAttributeValue(XNamespace.Xmlns + attribute.Prefix, attribute.Uri);
+            }
+        }
+
+        protected virtual XElement ParseProperties<TObject>(TObject obj, XElement parentElement, XNamespace @namespace = null)
             where TObject : class
         {
             return ParsePropertiesInternal(obj, (object) null, parentElement, @namespace);
         }
 
-        internal XElement ParsePropertiesInternal<TObject, TParent>(TObject obj, TParent parentobj, XElement parentElement = null, XNamespace @namespace = null)
+        internal XElement ParsePropertiesInternal<TObject, TParent>(TObject obj, TParent parentobj, XElement parentElement, XNamespace @namespace = null)
             where TObject : class
             where TParent : class
         {
@@ -52,7 +69,6 @@ namespace dng.Syndication.Generators
                     property.GetCustomAttributes(typeof(TAttribute), false)
                         .Cast<TAttribute>().ToList();
 
-                
                 if (!propertyAttributes.Any())
                 {
                     continue;
@@ -150,9 +166,9 @@ namespace dng.Syndication.Generators
         {
             XName result = attribute.Name;
 
-            if (!string.IsNullOrWhiteSpace(attribute.NamespaceUrl))
+            if (!string.IsNullOrWhiteSpace(attribute.NamespaceUri))
             {
-                result = XNamespace.Get(attribute.NamespaceUrl) + attribute.Name;
+                result = XNamespace.Get(attribute.NamespaceUri) + attribute.Name;
             }
             else if (@namespace != null)
             {

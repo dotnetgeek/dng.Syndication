@@ -13,14 +13,14 @@ namespace dng.Syndication.Attributes
 
         public string Namespace { get; set; }
 
-        public Uri Url { get; private set; }
+        public Uri Uri { get; private set; }
 
         public string AttributeName { get; set; }
 
-        public string NamespaceUrl
+        public string NamespaceUri
         {
-            get => Url?.ToString();
-            set => Url = new Uri(value);
+            get => Uri?.ToString();
+            set => Uri = new Uri(value);
         }
 
         public Type Writer { get; set; }
