@@ -1,4 +1,4 @@
-﻿namespace dng.Syndication
+﻿namespace dng.Syndication.Models
 {
     public class Author
     {

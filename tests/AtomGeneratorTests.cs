@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using dng.Syndication.Generators;
+using dng.Syndication.Models;
+
 using Xunit;
+using FluentAssertions;
 
 namespace dng.Syndication.Tests
 {
     public class AtomGeneratorTests
     {
-
-        private readonly string _feedXml;
-
-        public AtomGeneratorTests()
-        {
-            var atomGenerator = new AtomGenerator(CreateFeed());
-            _feedXml = atomGenerator.Process();
-        }
-
         private Feed CreateFeed()
         {
             var feed = new Feed
@@ -46,32 +41,16 @@ namespace dng.Syndication.Tests
                 }
             };
 
-
             return feed;
         }
 
         [Fact]
-        public void CreatedFeedIsAsExpected()
+        public void when_creating_a_simple_atom_feed_with_one_entry()
         {
-            const string expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                                    "<feed xmlns=\"http://www.w3.org/2005/Atom\">" +
-                                    "<title type=\"text\">dotnetgeek feed</title>" +
-                                    "<subtitle type=\"text\">Dotnet relevant thinks</subtitle>" +
-                                    "<id>http://www.dotnetgeek.de/rss</id>" +
-                                    "<link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
-                                    "<author><name>Daniel</name><email>email@email.em</email></author>" +
-                                    "<rights>2016 @ www.dotnetgeek.com</rights>" +
-                                    "<generator>dng.Syndication</generator>" +
-                                    "<updated>2016-08-16T00:00:00Z</updated>" +
-                                    "<entry><title>First Entry</title>" +
-                                    "<link href=\"http://www.dotnetgeek.com/first-entry\" />" +
-                                    "<summary>summary</summary><content>Content</content>" +
-                                    "<author><name>Daniel</name><email>email@email.em</email></author>" +
-                                    "<id>http://www.dotnetgeek.com/first-entry</id>" +
-                                    "<updated>2016-08-16T00:00:00Z</updated>" +
-                                    "<published>2016-08-16T00:00:00Z</published></entry></feed>";
+            var atomGenerator = new AtomGenerator(CreateFeed(), true);
+            var feedXml = atomGenerator.Process();
 
-            Assert.Equal(expected, _feedXml);
+            feedXml.Should().Be(ExpectedContentLoader.LoadFromFile("SimpleAtomFeed.xml"));
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>dng.Syndication</AssemblyName>
     <Version>1.3.0</Version>
     <Authors>Daniel Mueller</Authors>
@@ -14,8 +14,4 @@
     <RepositoryUrl>https://github.com/dotnetgeek/dng.Syndication</RepositoryUrl>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
 </Project>

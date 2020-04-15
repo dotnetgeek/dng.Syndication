@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace dng.Syndication
+namespace dng.Syndication.Models
 {
     public class FeedEntry
     {
         /// <summary>
-        /// Title of the item 
+        /// Title of the item
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// The hyperlink to the item 
+        /// The hyperlink to the item
         /// </summary>
         public Uri Link { get; set; }
-
 
         public string Summary { get; set; }
 
