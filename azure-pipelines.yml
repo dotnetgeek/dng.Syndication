@@ -8,7 +8,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- support_PodcastRSSFeeds
+- azure-pipelines
 
 pool:
   vmImage: 'ubuntu-latest'
