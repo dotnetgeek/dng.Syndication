@@ -1,10 +1,8 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/q31a2qtgi4bw3e9b/branch/develop?svg=true)](https://ci.appveyor.com/project/dotnetgeek/dng-syndication/branch/develop)
 [![Build status](https://ci.appveyor.com/api/projects/status/80gqbde41fru5wlb/branch/master?svg=true)](https://ci.appveyor.com/project/dotnetgeek/dng-syndication/branch/master)
 [![NuGet](https://img.shields.io/nuget/v/dng.Syndication.svg)](https://www.nuget.org/packages/dng.Syndication)
 ![MIT License](https://img.shields.io/badge/license-MIT-orange.svg)
 
 # dng.Syndication
-
 
 A feed generator which can be used to create valid RSS 2.0 ([spec](http://cyber.harvard.)) and Atom([spec](https://tools.ietf.org/html/rfc4287)) syndication  feeds. It is written in C# and available as ([NuGet-Package]https://www.nuget.org/packages/dng.Syndication/).
 
