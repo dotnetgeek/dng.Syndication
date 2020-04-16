@@ -8,7 +8,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- azure-pipelines
 
 pool:
   vmImage: 'ubuntu-latest'
