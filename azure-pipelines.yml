@@ -8,7 +8,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- support_PodcastRSSFeeds
 
 pool:
   vmImage: 'ubuntu-latest'
