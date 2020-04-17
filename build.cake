@@ -65,10 +65,6 @@ Task("Clean")
 	CleanDirectories("./tests/**/obj");
 	CleanDirectory(artifactsDir);
     CleanDirectory(testResultDir);
-
-    MSBuild("./dng.Syndication.sln", c =>
-		c.SetConfiguration(configuration)
-            .WithTarget("Clean"));
 });
 
 Task("Restore-NuGet-Packages")
