@@ -14,6 +14,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- powershell: 'tzutil /s "W. Europe Standard Time"'
+  displayName: 'Configure Time Zone for tests'
+
+
+steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
