@@ -1,12 +1,4 @@
-﻿///https://github.com/appsourcers/ARKit-CoreLocation/blob/bb21ce273f49f42ffb471b3d582a235d9662e976/build.cake
-//https://github.com/dotnet/Nerdbank.GitVersioning/ 
-//https://cakebuild.net/api/Cake.Common.Tools.DotNetCore.Pack/DotNetCorePackSettings/A4C15415
-//https://github.com/search?p=4&q=Cake.GitVersioning&type=Code
-//https://github.com/clcrutch/posh-kentico/blob/5b80698884b8b295bfe887182d405fbaf32e832e/build.cake
-//https://github.com/AleXr64/Telegram-bot-framework/blob/bbd24269028f2b14268cb071f4a6b8ec93e39751/build/build.cake
-//https://github.com/gtbuchanan/repo-template-cs/blob/2ef15622fa41584d967c2e91e347dc327677795e/build.cake
-
-#addin "Cake.GitVersioning&version=3.1.74" 
+﻿#addin "Cake.GitVersioning&version=3.1.74" 
 #addin "Cake.Figlet&version=1.3.1"
 
 //////////////////////////////////////////////////////////////////////
@@ -153,20 +145,6 @@ Task("PushNuget")
         });
     }
 });
-
-Task("GetVersion")
-    .Does(() =>
-{
-    Information("SemVer:" + gitVersion.SemVer2);
-    Information("SemVer1:" + gitVersion.SemVer1);
-    Information("AssemblyVersion:" + gitVersion.AssemblyVersion);
-    Information("AssemblyFileVersion:" + gitVersion.AssemblyFileVersion);
-    Information("AssemblyInformationalVersion:" + gitVersion.AssemblyInformationalVersion);
-    Information("Version:" + gitVersion.Version);
-    Information("NuGetPackageVersion:" + gitVersion.NuGetPackageVersion);
-
-});
-
 
 Task("Default").IsDependentOn("Test");
 
