@@ -1,4 +1,7 @@
 version: 1.5.0.{build}
+branches:
+  only:
+  - master
 image: Visual Studio 2019
 init:
 - tzutil /s "W. Europe Standard Time"
