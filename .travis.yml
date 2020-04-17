@@ -1,6 +1,0 @@
-language: csharp
-os:
-  - linux
-solution: dng.Syndication.sln
-script:
-  - ./build.sh -target=pack
