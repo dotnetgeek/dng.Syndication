@@ -1,4 +1,4 @@
-[![Build status](https://dotnetgeek-online.visualstudio.com/dng.Syndication/_apis/build/status/dng.Syndication-CI)](https://dotnetgeek-online.visualstudio.com/dng.Syndication/_build/latest?definitionId=18)]
+[![Build status](https://dotnetgeek-online.visualstudio.com/dng.Syndication/_apis/build/status/dng.Syndication-CI)](https://dotnetgeek-online.visualstudio.com/dng.Syndication/_build/latest?definitionId=18)
 [![Build status](https://ci.appveyor.com/api/projects/status/80gqbde41fru5wlb/branch/master?svg=true)](https://ci.appveyor.com/project/dotnetgeek/dng-syndication/branch/master)
 [![NuGet](https://img.shields.io/nuget/v/dng.Syndication.svg)](https://www.nuget.org/packages/dng.Syndication)
 ![MIT License](https://img.shields.io/badge/license-MIT-orange.svg)
