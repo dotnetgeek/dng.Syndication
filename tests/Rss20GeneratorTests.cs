@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using dng.Syndication.Generators;
+using dng.Syndication.Models;
+
 using Xunit;
+using FluentAssertions;
 
 namespace dng.Syndication.Tests
 {
     public class Rss20GeneratorTests
     {
-
-        private readonly string _feedXml;
-
-        public Rss20GeneratorTests()
-        {
-            var rss20Generator = new Rss20Generator(CreateFeed());
-            _feedXml = rss20Generator.Process();
-        }
-        
         private Feed CreateFeed()
         {
             var feed = new Feed
@@ -46,29 +41,16 @@ namespace dng.Syndication.Tests
                 }
             };
 
-
             return feed;
         }
 
         [Fact]
-        public void CreatedFeedIsAsExpected()
+        public void when_creating_a_simple_rss_feed_with_one_entry()
         {
-            const string expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                                    "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" +
-                                    "<channel><title>dotnetgeek feed</title>" +
-                                    "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.dotnetgeek.de/rss\" />" +
-                                    "<link>http://www.dotnetgeek.de/rss</link>" +
-                                    "<description>Dotnet relevant topics</description>" +
-                                    "<copyright>2016 @ www.dotnetgeek.com</copyright>" +
-                                    "<generator>dng.Syndication</generator>" +
-                                    "<language>de</language>" +
-                                    "<lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0200</lastBuildDate>" +
-                                    "<item><title>First Entry</title><description>Content</description>" +
-                                    "<guid>http://www.dotnetgeek.com/first-entry</guid><link>http://www.dotnetgeek.com/first-entry</link>" +
-                                    "<pubDate>Tue, 16 Aug 2016 00:00:00 +0200</pubDate>" +
-                                    "</item></channel></rss>";
+            var rss20Generator = new RSS20Generator(CreateFeed(), true);
+            var feedXml = rss20Generator.Process();
 
-            Assert.Equal(expected, _feedXml);
+            feedXml.Should().Be(ExpectedContentLoader.LoadFromFile("SimpleRssFeed.xml"));
         }
     }
 }

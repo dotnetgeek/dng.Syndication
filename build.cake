@@ -1,74 +1,90 @@
+﻿#addin "Cake.GitVersioning&version=3.1.74" 
+#addin "Cake.Figlet&version=1.3.1"
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
 var target = Argument("target", "Default");
-var artifactsDir = "./artifacts"; 
-var testResultDir = artifactsDir + "/test-results";
 var configuration = Argument("configuration", "Release");
+
+DotNetCoreBuildSettings dotNetCoreBuildSettings; 
+DotNetCoreMSBuildSettings msBuildSettings;
+
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
-// Define directories.
-//var buildDir = Directory("./src/Example/bin") + Directory(configuration);
+var artifactsDir = Directory(Argument("artifactsDir", EnvironmentVariable("BUILD_ARTIFACTDIR") ?? "./artifacts"));
+var testResultDir = artifactsDir + Directory("test-results");
+
+var gitVersion = GitVersioningGetVersion();
+
+Setup(context =>
+{
+    Information(Figlet("dng.Syndication"));
+    Information("Is Windows {0}", IsRunningOnWindows());
+
+    msBuildSettings = new DotNetCoreMSBuildSettings()
+        .SetInformationalVersion(gitVersion.AssemblyInformationalVersion.ToString())
+        .SetFileVersion(gitVersion.AssemblyFileVersion.ToString())
+        .SetVersion(gitVersion.Version.ToString())
+        .WithProperty("PackageVersion", gitVersion.Version.ToString());
+
+    dotNetCoreBuildSettings = new DotNetCoreBuildSettings
+    {
+        Configuration = configuration,
+        MSBuildSettings = msBuildSettings
+    };
+});
+
+Teardown(context =>
+{
+    Information("Finished running tasks ✔");
+});
+
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
+Task("dotnet-info")
+    .Does(() =>
+{
+    Information("dotnet --info");
+    StartProcess("dotnet", new ProcessSettings { Arguments = "--info" });
+});
+
 Task("Clean")
     .Does(() =>
 {
-    // Clean solution directories.
-    Information("Cleaning directories and files");
-
     CleanDirectories("./src/**/obj");
 	CleanDirectories("./src/**/bin");
 	CleanDirectories("./tests/**/bin");
 	CleanDirectories("./tests/**/obj");
-	CleanDirectories(artifactsDir);
-    CleanDirectories(testResultDir);
+	CleanDirectory(artifactsDir);
+    CleanDirectory(testResultDir);
 });
-
-
-Task("Prepare")
- .IsDependentOn("Clean")
-.Does(()=> 
-{
-    CreateDirectory(artifactsDir);
-});
-
 
 Task("Restore-NuGet-Packages")
-    .IsDependentOn("Prepare")
     .Does(() =>
 {
     DotNetCoreRestore("./",new DotNetCoreRestoreSettings
     {
         Sources = new [] {
-            "https://api.nuget.org/v3/index.json"
+            EnvironmentVariable("nuget-source") ?? "https://api.nuget.org/v3/index.json"
         }
     });
 });
 
 Task("Build")
+    .IsDependentOn("dotnet-info")
+    .IsDependentOn("Clean")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    if(IsRunningOnWindows())
-    {
-      // Use MSBuild
-      MSBuild("./src/dng.Syndication.csproj", settings =>
-        settings.SetConfiguration(configuration));
-    }
-    else
-    {
-      // Use XBuild
-      XBuild("./src/dng.Syndication.csproj", settings =>
-        settings.SetConfiguration(configuration));
-    }
+      DotNetCoreBuild("./src/dng.Syndication.csproj", dotNetCoreBuildSettings);
 });
 
 Task("Test")
@@ -78,7 +94,6 @@ Task("Test")
     var projects = GetFiles("./tests/**/*.Tests.csproj");
     foreach(var project in projects)
     {
-        Console.Write(project);
         DotNetCoreTest (project.ToString(), new DotNetCoreTestSettings  {
             ArgumentCustomization = args =>
                     args.Append("--logger ")
@@ -92,17 +107,21 @@ Task("Test")
 
 Task("Pack")
     .IsDependentOn("Test")
-    .Does(() => {
-        DotNetCorePack("./src/dng.Syndication.csproj", new DotNetCorePackSettings
-        {
-            Configuration = "Release",
-            OutputDirectory = artifactsDir,
-            NoBuild = true
-        });
+    .Does(() => 
+{
+    DotNetCorePack("./src/dng.Syndication.csproj", new DotNetCorePackSettings
+    {
+        Configuration = "Release",
+        OutputDirectory = artifactsDir,
+        NoBuild = true,
+        MSBuildSettings = msBuildSettings
     });
+});
 
-Task("Publish").
-    IsDependentOn("Pack").Does(()=> {
+Task("PushNuget")
+    .IsDependentOn("Pack")
+    .Does(() => 
+{
 
     var nugetApiKey = EnvironmentVariable("nuget-apikey") ?? "";
     var nugetApiServer = EnvironmentVariable("nuget-server") ?? "";
@@ -122,10 +141,6 @@ Task("Publish").
         });
     }
 });
-
-//////////////////////////////////////////////////////////////////////
-// TASK TARGETS
-//////////////////////////////////////////////////////////////////////
 
 Task("Default").IsDependentOn("Test");
 

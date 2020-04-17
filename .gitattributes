@@ -1,0 +1,12 @@
+# Auto detect text files and perform CRLF normalization
+* text=auto eol=crlf
+
+*.cs text diff=csharp
+*.config text diff=csharp
+*.xml text diff=csharp
+*.ps1 text
+*.md text
+*.cake text eol=crlf
+
+*.csproj text=auto merge=union 
+*.sln text=auto eol=crlf merge=union 

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using dng.Syndication.Models;
 
-namespace dng.Syndication
+namespace dng.Syndication.Models
 {
     public class Feed
     {
@@ -54,5 +55,10 @@ namespace dng.Syndication
         /// Describes the feed
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Defines the e-mail address to the webmaster of the feed
+        /// </summary>
+        public string WebMaster { get; set; }
     }
 }

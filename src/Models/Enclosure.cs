@@ -1,15 +1,16 @@
 ﻿using System;
+using static System.String;
 
-namespace dng.Syndication
+namespace dng.Syndication.Models
 {
     public class Enclosure
     {
         public Enclosure(
-            string url,
+            Uri url,
             int length,
             string mediaType)
         {
-            if (string.IsNullOrWhiteSpace(url) || string.IsNullOrWhiteSpace(mediaType) || length < 0)
+            if (url == null || IsNullOrWhiteSpace(mediaType) || length < 0)
                 throw new ArgumentException("Url and / or Mediatype missing.");
 
             Url = url;
@@ -20,7 +21,7 @@ namespace dng.Syndication
         /// <summary>
         /// Where the enclosure is located
         /// </summary>
-        public string Url { get; }
+        public Uri Url { get; }
 
         /// <summary>
         /// How big it is in bytes
