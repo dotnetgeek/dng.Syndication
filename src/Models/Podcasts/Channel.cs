@@ -48,7 +48,10 @@ namespace dng.Syndication.Models.Podcasts
         /// </summary>
         public string Language { get; set; }
 
-        public PodcastImage Image { get; set; }
+        /// <summary>
+        /// Specify your podcast artwork
+        /// </summary>
+        public Uri Image { get; set; }
 
         public DateTime? LastBuildDate { get; set; }
 

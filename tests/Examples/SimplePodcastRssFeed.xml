@@ -10,14 +10,11 @@
     <generator>MyPodcast Generator</generator>
     <itunes:type>serial</itunes:type>
     <copyright>&amp;#169; 2020 Lorem</copyright>
-    <image>
-      <url>https://www.example.com/podcasts/img/Lorem-ipsum.jpg</url>
-      <title>Lorem ipsum dolor sit amet?</title>
-      <link>https://www.example.com/podcasts/Lorem-ipsum-dolor-sit-amet</link>
-    </image>
     <itunes:image href="https://www.example.com/podcasts/img/Lorem-ipsum.jpg" />
+    <googleplay:image href="https://www.example.com/podcasts/img/Lorem-ipsum.jpg" />
     <itunes:subtitle>At vero eos et accusam et justo duo dolores</itunes:subtitle>
     <itunes:author>Lorem</itunes:author>
+    <googleplay:author>Lorem</googleplay:author>
     <itunes:explicit>no</itunes:explicit>
     <itunes:category text="Sports">
       <itunes:category text="Wilderness" />

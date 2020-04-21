@@ -41,7 +41,7 @@ namespace dng.Syndication.Models.Podcasts
         /// <summary>
         /// Duration of the episode into seconds.
         /// </summary>
-        public int Duration{ get; set; }
+        public TimeSpan Duration{ get; set; }
 
         /// <summary>
         /// The episode content, file size, and file type information.
@@ -75,5 +75,10 @@ namespace dng.Syndication.Models.Podcasts
         /// If you want an episode removed from the Apple directory, use this tag.
         /// </summary>
         public bool Block { get; set; }
+
+        /// <summary>
+        /// Specify your episode artwork
+        /// </summary>
+        public Uri Image { get; set; }
     }
 }

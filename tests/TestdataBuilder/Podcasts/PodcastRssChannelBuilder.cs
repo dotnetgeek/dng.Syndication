@@ -22,7 +22,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
         private bool _explicit;
         private DateTime? _lastBuildDate;
         private string _subTitle;
-        private PodcastImage _podcastImage;
+        private Uri _podcastImage;
         private string _authorname;
 
         public PodcastRssChannelBuilder()
@@ -121,7 +121,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
         }
 
         public PodcastRssChannelBuilder WithPodcastImage(
-            PodcastImage podcastImage)
+            Uri podcastImage)
         {
             _podcastImage = podcastImage;
             return this;
@@ -154,11 +154,15 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
                  .WithLastBuildDate(new DateTime(2020, 4, 13, 16, 4, 52))
                  .WithDescription("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.")
                  .WithType("serial")
-                 .WithPodcastImage(new PodcastImageBuilder()
+                 .WithPodcastImage(new Uri("https://www.example.com/podcasts/img/Lorem-ipsum.jpg"));
+                 /*
                     .WithTitle("Lorem ipsum dolor sit amet?")
                     .WithLink(new Uri("https://www.example.com/podcasts/Lorem-ipsum-dolor-sit-amet"))
-                    .WithUrl(new Uri("https://www.example.com/podcasts/img/Lorem-ipsum.jpg"))
+                    .WithUrl(new Uri("https://www.example.com/podcasts/img/Lorem-ipsum.jpg")
+                    
+                 )
                     .Build());
+    */
         }
 
         public PodcastRssChannelBuilder WithDefaultCategories()

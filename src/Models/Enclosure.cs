@@ -26,7 +26,7 @@ namespace dng.Syndication.Models
         /// <summary>
         /// How big it is in bytes
         /// </summary>
-        public int Length { get; }
+        public long Length { get; }
 
         /// <summary>
         /// Standard MIME type

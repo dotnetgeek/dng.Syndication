@@ -13,7 +13,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
         private string _author;
         private DateTime _date;
         private int _episodeNumber;
-        private int _duration;
+        private TimeSpan _duration;
         private bool _explicit;
         private Uri _link;
         private Enclosure _enclosure;
@@ -68,7 +68,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
         }
 
         public PodcastRssEpisodeBuilder WithDuration(
-            int duration)
+            TimeSpan duration)
         {
             _duration = duration;
             return this;
@@ -102,7 +102,8 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
                 .WithDescription(@"<p>Lorem ipsum dolor sit amet, <a href=""https://www.apple.com/itunes/podcasts/"">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>")
                 .WithAuthor("Lorem")
                 .WithDate(new DateTime(2020, 4, 9, 14, 45, 00))
-                .WithDuration(1079)
+                .WithDuration(TimeSpan.FromSeconds(1079))
+                .WithDuration(TimeSpan.FromSeconds(1079))
                 .WithExplicit(false)
                 .WithLink(new Uri("https://www.example.com/podcasts/At-vero-eos-et-accusam-et-justo-duo"))
                 .WithEnclosure(new Enclosure

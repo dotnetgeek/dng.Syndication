@@ -54,19 +54,15 @@ namespace dng.Syndication.Generators
 
             if (_channel.Image != null)
             {
-                if (!IsNullOrWhiteSpace(_channel.Image.Title))
-                    channel.Add(new XElement("image",
-                        new XElement("url", _channel.Image.Url),
-                        new XElement("title", _channel.Image.Title),
-                        new XElement("link", _channel.Image.Link)));
-
-                channel.Add(new XElement(itunesNamespace + "image", new XAttribute("href", _channel.Image.Url)));
+                channel.Add(new XElement(itunesNamespace + "image", new XAttribute("href", _channel.Image)));
+                channel.Add(new XElement(googleplayNamespace + "image", new XAttribute("href", _channel.Image)));
             }
 
             if (!IsNullOrWhiteSpace(_channel.SubTitle))
                 channel.Add(new XElement(itunesNamespace + "subtitle", _channel.SubTitle));
 
             channel.Add(new XElement(itunesNamespace + "author", _channel.Author));
+            channel.Add(new XElement(googleplayNamespace + "author", _channel.Author));
 
             if (_channel.IsExplicit.HasValue)
                 channel.Add(new XElement(itunesNamespace + "explicit", _channel.IsExplicit.Value ? "yes " : "no"));
@@ -119,7 +115,7 @@ namespace dng.Syndication.Generators
                         new XAttribute("url", episode.Enclosure.Url),
                         new XAttribute("type", episode.Enclosure.MediaType),
                         new XAttribute("length", episode.Enclosure.Length)),
-                    new XElement(itunesNamespace + "duration", episode.Duration)
+                    new XElement(itunesNamespace + "duration", episode.Duration.TotalSeconds.ToString())
                  ));
             }
         }
