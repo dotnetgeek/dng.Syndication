@@ -155,14 +155,6 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
                  .WithDescription("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.")
                  .WithType("serial")
                  .WithPodcastImage(new Uri("https://www.example.com/podcasts/img/Lorem-ipsum.jpg"));
-                 /*
-                    .WithTitle("Lorem ipsum dolor sit amet?")
-                    .WithLink(new Uri("https://www.example.com/podcasts/Lorem-ipsum-dolor-sit-amet"))
-                    .WithUrl(new Uri("https://www.example.com/podcasts/img/Lorem-ipsum.jpg")
-                    
-                 )
-                    .Build());
-    */
         }
 
         public PodcastRssChannelBuilder WithDefaultCategories()
@@ -171,12 +163,12 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
                 {
                    new Category
                    {
-                       Value = "Sports",
+                       Text = "Sports",
                        SubCategories = new List<Category>
                        {
                             new Category
                             {
-                                Value = "Wilderness"
+                                Text = "Wilderness"
                             }
                        }
                     }
@@ -210,7 +202,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
                 Type = _type,
                 Owner = new Author() { Name = _authorname, Email = _authoremail },
                 Image = _podcastImage,
-                IsExplicit = _explicit,
+                Explicit = _explicit,
                 LastBuildDate = _lastBuildDate,
                 Date = _date,
                 Categories = _categories,

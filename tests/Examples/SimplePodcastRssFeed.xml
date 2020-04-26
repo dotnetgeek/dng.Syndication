@@ -6,6 +6,7 @@
     <pubDate>Tue, 14 Apr 2020 00:03:00 +0200</pubDate>
     <lastBuildDate>Mon, 13 Apr 2020 16:04:52 +0200</lastBuildDate>
     <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</description>
+    <itunes:summary>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</itunes:summary>
     <link>https://www.example.com/podcasts/Lorem-ipsum-dolor-sit-amet</link>
     <generator>MyPodcast Generator</generator>
     <itunes:type>serial</itunes:type>
@@ -15,11 +16,11 @@
     <itunes:subtitle>At vero eos et accusam et justo duo dolores</itunes:subtitle>
     <itunes:author>Lorem</itunes:author>
     <googleplay:author>Lorem</googleplay:author>
-    <itunes:explicit>no</itunes:explicit>
+    <itunes:explicit>false</itunes:explicit>
+    <googleplay:explicit>no</googleplay:explicit>
     <itunes:category text="Sports">
       <itunes:category text="Wilderness" />
     </itunes:category>
-    <itunes:summary>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</itunes:summary>
     <itunes:owner>
       <itunes:name>Lorem</itunes:name>
       <itunes:email>Lorem@example.com</itunes:email>
@@ -28,15 +29,33 @@
       <title>At vero eos et accusam et justo duo</title>
       <itunes:title>At vero eos et accusam et justo duo</itunes:title>
       <description><![CDATA[<p>Lorem ipsum dolor sit amet, <a href="https://www.apple.com/itunes/podcasts/">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>]]></description>
+      <itunes:summary><![CDATA[<p>Lorem ipsum dolor sit amet, <a href="https://www.apple.com/itunes/podcasts/">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>]]></itunes:summary>
       <pubDate>Thu, 9 Apr 2020 14:45:00 +0200</pubDate>
       <link>https://www.example.com/podcasts/At-vero-eos-et-accusam-et-justo-duo</link>
       <guid isPermaLink="false">20f0fc4c7c404</guid>
       <content:encoded><![CDATA[<p>Lorem ipsum dolor sit amet, <a href="https://www.apple.com/itunes/podcasts/">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>]]></content:encoded>
       <itunes:episodeType>full</itunes:episodeType>
-      <itunes:explicit>no</itunes:explicit>
+      <itunes:explicit>false</itunes:explicit>
+      <googleplay:explicit>no</googleplay:explicit>
       <itunes:author>Lorem</itunes:author>
       <enclosure url="http://example.com/podcasts/everything/AllAboutEverythingEpisode4.mp3" type="audio/mpeg" length="498537" />
       <itunes:duration>1079</itunes:duration>
+    </item>
+    <item>
+      <title>Et accusam et justo duo</title>
+      <itunes:title>Et accusam et justo duo</itunes:title>
+      <description><![CDATA[<p>Lorem ipsum dolor sit amet, <a href="https://www.apple.com/itunes/podcasts/">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>]]></description>
+      <itunes:summary><![CDATA[<p>Lorem ipsum dolor sit amet, <a href="https://www.apple.com/itunes/podcasts/">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>]]></itunes:summary>
+      <pubDate>Wed, 8 Apr 2020 12:45:00 +0200</pubDate>
+      <itunes:image href="https://www.example.com/podcasts/img/episode2.jpg" />
+      <guid isPermaLink="false">40f0fc5c7c404</guid>
+      <content:encoded><![CDATA[<p>Lorem ipsum dolor sit amet, <a href="https://www.apple.com/itunes/podcasts/">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>]]></content:encoded>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:explicit>false</itunes:explicit>
+      <googleplay:explicit>no</googleplay:explicit>
+      <itunes:author>Justo</itunes:author>
+      <enclosure url="http://example.com/podcasts/everything/AllAboutEverythingEpisode3.mp3" type="audio/mpeg" length="510537" />
+      <itunes:duration>1102</itunes:duration>
     </item>
   </channel>
 </rss>

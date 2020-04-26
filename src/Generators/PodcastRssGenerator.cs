@@ -9,20 +9,18 @@ namespace dng.Syndication.Generators
 {
     public class PodcastRssGenerator : Generator
     {
-        private readonly Channel _channel;
         private readonly XNamespace itunesNamespace = "http://www.itunes.com/dtds/podcast-1.0.dtd";
         private readonly XNamespace contentNamespace = "http://purl.org/rss/1.0/modules/content/";
         private readonly XNamespace googleplayNamespace = "http://www.google.com/schemas/play-podcasts/1.0";
 
         public PodcastRssGenerator(
-            Channel channel,
             bool indentXDocument)
             : base(indentXDocument)
         {
-            _channel = channel;
         }
 
-        public string Process()
+        public string Process(
+            Channel channel)
         {
             var root = new XElement("rss");
 
@@ -33,57 +31,64 @@ namespace dng.Syndication.Generators
 
             CreateXDocument(root);
 
-            var channel = new XElement("channel");
-            channel.Add(new XElement("title", _channel.Title));
-            channel.Add(new XElement("language", _channel.Language));
+            var channelElement = new XElement("channel");
+            channelElement.Add(new XElement("title", channel.Title));
+            channelElement.Add(new XElement("language", channel.Language));
 
-            if (_channel.Date.HasValue)
-                channel.Add(new XElement("pubDate", FormatDateRfc2822(_channel.Date.Value)));
+            if (channel.Date.HasValue)
+                channelElement.Add(new XElement("pubDate", FormatDateRfc2822(channel.Date.Value)));
 
-            if (_channel.LastBuildDate.HasValue)
-                channel.Add(new XElement("lastBuildDate", FormatDateRfc2822(_channel.LastBuildDate.Value)));
+            if (channel.LastBuildDate.HasValue)
+                channelElement.Add(new XElement("lastBuildDate", FormatDateRfc2822(channel.LastBuildDate.Value)));
 
-            channel.Add(new XElement("description", _channel.Description));
+            channelElement.Add(new XElement("description", channel.Description));
+            channelElement.Add(new XElement(itunesNamespace + "summary", channel.Description));
 
-            if (_channel.Link != null)
-                channel.Add(new XElement("link", _channel.Link));
+            if (channel.Link != null)
+                channelElement.Add(new XElement("link", channel.Link));
 
-            channel.Add(new XElement("generator", _channel.Generator));
-            channel.Add(new XElement(itunesNamespace + "type", _channel.Type));
-            channel.Add(new XElement("copyright", _channel.Copyright));
+            if (!IsNullOrWhiteSpace(channel.Generator))
+                channelElement.Add(new XElement("generator", channel.Generator));
 
-            if (_channel.Image != null)
+            channelElement.Add(new XElement(itunesNamespace + "type", channel.Type));
+            channelElement.Add(new XElement("copyright", channel.Copyright));
+
+            if (channel.Image != null)
             {
-                channel.Add(new XElement(itunesNamespace + "image", new XAttribute("href", _channel.Image)));
-                channel.Add(new XElement(googleplayNamespace + "image", new XAttribute("href", _channel.Image)));
+                channelElement.Add(new XElement(itunesNamespace + "image", new XAttribute("href", channel.Image)));
+                channelElement.Add(new XElement(googleplayNamespace + "image", new XAttribute("href", channel.Image)));
             }
 
-            if (!IsNullOrWhiteSpace(_channel.SubTitle))
-                channel.Add(new XElement(itunesNamespace + "subtitle", _channel.SubTitle));
+            if (!IsNullOrWhiteSpace(channel.SubTitle))
+                channelElement.Add(new XElement(itunesNamespace + "subtitle", channel.SubTitle));
 
-            channel.Add(new XElement(itunesNamespace + "author", _channel.Author));
-            channel.Add(new XElement(googleplayNamespace + "author", _channel.Author));
+            channelElement.Add(new XElement(itunesNamespace + "author", channel.Author));
+            channelElement.Add(new XElement(googleplayNamespace + "author", channel.Author));
 
-            if (_channel.IsExplicit.HasValue)
-                channel.Add(new XElement(itunesNamespace + "explicit", _channel.IsExplicit.Value ? "yes " : "no"));
+            if (channel.Explicit.HasValue)
+            {
+                channelElement.Add(new XElement(itunesNamespace + "explicit", channel.Explicit.Value ? "true " : "false"));
+                channelElement.Add(new XElement(googleplayNamespace + "explicit", channel.Explicit.Value ? "yes " : "no"));
+            }
 
-            if (_channel.Categories?.Count > 0)
-                AppendCatgories(channel, _channel.Categories);
+            if (channel.Categories?.Count > 0)
+                AppendCatgories(channelElement, channel.Categories);
 
-            channel.Add(new XElement(itunesNamespace + "summary", _channel.Description));
-
-            if (_channel.Owner != null)
+            if (channel.Owner != null)
             {
                 var owner = new XElement(itunesNamespace + "owner");
-                owner.Add(new XElement(itunesNamespace + "name", _channel.Owner.Name));
-                owner.Add(new XElement(itunesNamespace + "email", _channel.Owner.Email));
+                owner.Add(new XElement(itunesNamespace + "name", channel.Owner.Name));
+                owner.Add(new XElement(itunesNamespace + "email", channel.Owner.Email));
 
-                channel.Add(owner);
+                channelElement.Add(owner);
             }
 
-            AppendItems(channel, _channel?.Episodes);
+            if (!IsNullOrWhiteSpace(channel.Webmaster))
+                channelElement.Add(new XElement("webMaster", channel.Webmaster));
 
-            root.Add(channel);
+            AppendItems(channelElement, channel?.Episodes);
+
+            root.Add(channelElement);
 
             return ConvertToString();
         }
@@ -102,14 +107,17 @@ namespace dng.Syndication.Generators
                     new XElement("title", episode.Title),
                     new XElement(itunesNamespace + "title", episode.Title),
                     new XElement("description", new XCData(episode.Description)),
+                    new XElement(itunesNamespace + "summary", new XCData(episode.Description)),
                     new XElement("pubDate", FormatDateRfc2822(episode.Date)),
-                    new XElement("link", episode.Link),
+                    episode.Link != null ? new XElement("link", episode.Link) : null,
+                    episode.Image != null ? new XElement(itunesNamespace + "image", new XAttribute("href", episode.Image)) : null,
                     new XElement("guid", new XAttribute("isPermaLink", false), episode.Guid),
                     new XElement(contentNamespace + "encoded", new XCData(episode.Description)),
                     episode.EpisodeNumber > 0 ? new XElement(itunesNamespace + "episode", episode.EpisodeNumber) : null,
                     new XElement(itunesNamespace + "episodeType", episode.EpisodeType.ToString().ToLower()),
                     episode.SeasonNumber > 0 ? new XElement(itunesNamespace + "season", episode.SeasonNumber) : null,
-                    episode.Explicit.HasValue ? new XElement(itunesNamespace + "explicit", episode.Explicit.Value ? "yes" : "no") : null,
+                    episode.Explicit.HasValue ? new XElement(itunesNamespace + "explicit", episode.Explicit.Value ? "true" : "false") : null,
+                    episode.Explicit.HasValue ? new XElement(googleplayNamespace + "explicit", episode.Explicit.Value ? "yes" : "no") : null,
                     !IsNullOrWhiteSpace(episode.Author) ? new XElement(itunesNamespace + "author", episode.Author) : null,
                     new XElement("enclosure",
                         new XAttribute("url", episode.Enclosure.Url),
@@ -126,7 +134,7 @@ namespace dng.Syndication.Generators
         {
             foreach (var category in categories)
             {
-                var categoryXElement = new XElement(itunesNamespace + "category", new XAttribute("text", category.Value));
+                var categoryXElement = new XElement(itunesNamespace + "category", new XAttribute("text", category.Text));
 
                 if (category.SubCategories?.Count > 0)
                     AppendCatgories(categoryXElement, category.SubCategories);

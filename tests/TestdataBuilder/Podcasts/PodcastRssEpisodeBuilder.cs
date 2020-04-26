@@ -17,6 +17,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
         private bool _explicit;
         private Uri _link;
         private Enclosure _enclosure;
+        private Uri _image;
 
         public PodcastRssEpisodeBuilder WithEpisodeType(
             EpisodeType episodeType)
@@ -95,6 +96,13 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
             return this;
         }
 
+        public PodcastRssEpisodeBuilder WithImage(
+            Uri image)
+        {
+            _image = image;
+            return this;
+        }
+
         public PodcastRssEpisodeBuilder WithDefault()
         {
             return WithEpisodeType(EpisodeType.Full)
@@ -102,7 +110,6 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
                 .WithDescription(@"<p>Lorem ipsum dolor sit amet, <a href=""https://www.apple.com/itunes/podcasts/"">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>")
                 .WithAuthor("Lorem")
                 .WithDate(new DateTime(2020, 4, 9, 14, 45, 00))
-                .WithDuration(TimeSpan.FromSeconds(1079))
                 .WithDuration(TimeSpan.FromSeconds(1079))
                 .WithExplicit(false)
                 .WithLink(new Uri("https://www.example.com/podcasts/At-vero-eos-et-accusam-et-justo-duo"))
@@ -125,6 +132,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
                 Author = _author,
                 Date = _date,
                 EpisodeNumber = _episodeNumber,
+                Image = _image,
                 Duration = _duration,
                 Explicit = _explicit,
                 Link = _link,

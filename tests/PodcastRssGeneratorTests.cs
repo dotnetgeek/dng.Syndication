@@ -21,8 +21,8 @@ namespace dng.Syndication.Tests
                 .WithDefaultChannel()
                 .Build();
 
-            var generator = new PodcastRssGenerator(channel, true);
-            generator.Process();
+            var generator = new PodcastRssGenerator(true);
+            generator.Process(channel);
 
             //https://fluentassertions.com/xml/
             generator.XDocument.Declaration.Should().NotBeNull();
@@ -42,10 +42,26 @@ namespace dng.Syndication.Tests
                 .WithEpisode(new PodcastRssEpisodeBuilder()
                     .WithDefault()
                     .Build())
+                .WithEpisode(new PodcastRssEpisodeBuilder()
+                    .WithTitle("Et accusam et justo duo")
+                    .WithDescription(@"<p>Lorem ipsum dolor sit amet, <a href=""https://www.apple.com/itunes/podcasts/"">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>")
+                    .WithDuration(TimeSpan.FromSeconds(1102))
+                    .WithId("40f0fc5c7c404")
+                    .WithEpisodeType(EpisodeType.Full)
+                    .WithAuthor("Justo")
+                    .WithDate(new DateTime(2020, 4, 8, 12, 45, 00))
+                    .WithImage(new Uri("https://www.example.com/podcasts/img/episode2.jpg"))
+                    .WithEnclosure(new Enclosure
+                        (
+                            url: new Uri("http://example.com/podcasts/everything/AllAboutEverythingEpisode3.mp3"),
+                            length: 510537,
+                            mediaType: EnclosureMediaType.AudioMPEG
+                        ))
+                    .Build())
                 .Build();
 
-            var generator = new PodcastRssGenerator(channel, true);
-            var generatedRss = generator.Process();
+            var generator = new PodcastRssGenerator(true);
+            var generatedRss = generator.Process(channel);
 
             generatedRss.Should().Be(ExpectedContentLoader.LoadFromFile("SimplePodcastRssFeed.xml"));
         }

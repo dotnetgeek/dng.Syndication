@@ -10,6 +10,11 @@ namespace dng.Syndication.Models.Podcasts
         /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// At the Channel level, this tag is a short description that provides general
+        /// information about the Podcast. It will appear next to your Podcast as users
+        /// browse through listings of Podcasts.
+        /// </summary>
         public string SubTitle { get; set; }
 
         /// <summary>
@@ -62,7 +67,7 @@ namespace dng.Syndication.Models.Podcasts
         /// <summary>
         /// The podcast parental advisory information.
         /// </summary>
-        public bool? IsExplicit { get; set; }
+        public bool? Explicit { get; set; }
 
         public List<Episode> Episodes { get; set; }
 
@@ -72,5 +77,11 @@ namespace dng.Syndication.Models.Podcasts
         public string Type { get; set; }
 
         public string Generator { get; set; }
+
+        /// <summary>
+        /// Our webmaster email address accompanied by a "real name".
+        /// The format is this: exampel@domain.com (real name)
+        /// </summary>
+        public string Webmaster { get; set; }
     }
 }
