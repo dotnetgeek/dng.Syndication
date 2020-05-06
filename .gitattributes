@@ -3,10 +3,11 @@
 
 *.cs text diff=csharp
 *.config text diff=csharp
-*.xml text diff=csharp
+*.xml text eol=cr diff=csharp
 *.ps1 text
 *.md text
-*.cake text eol=crlf
+*.cake text eol=cr
+*.sh text eol=cr
 
 *.csproj text=auto merge=union 
 *.sln text=auto eol=crlf merge=union 
