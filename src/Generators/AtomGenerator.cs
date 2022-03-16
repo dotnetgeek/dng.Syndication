@@ -3,6 +3,8 @@ using System.Xml;
 using System.Xml.Linq;
 
 using dng.Syndication.Models;
+using System.Web;
+using System.Text;
 
 namespace dng.Syndication.Generators
 {
@@ -68,13 +70,15 @@ namespace dng.Syndication.Generators
                 var itemElement = new XElement(ns + "entry");
                 itemElement.Add(new XElement(ns + "title", feedEntry.Title));
 
-                itemElement.Add(new XElement(ns + "link", new XAttribute("href", feedEntry.Link)));
+                itemElement.Add(new XElement(ns + "link", 
+                    new XAttribute("href", 
+                    HttpUtility.UrlDecode(feedEntry.Link.ToString(), Encoding.UTF8))));
 
                 if (!string.IsNullOrWhiteSpace(feedEntry.Summary))
                     itemElement.Add(new XElement(ns + "summary", feedEntry.Summary));
 
                 if (!string.IsNullOrWhiteSpace(feedEntry.Content))
-                    itemElement.Add(new XElement(ns + "content", feedEntry.Content));
+                    itemElement.Add(new XElement(ns + "content", new XCData(feedEntry.Content)));
 
                 if (feedEntry.Author != null)
                 {

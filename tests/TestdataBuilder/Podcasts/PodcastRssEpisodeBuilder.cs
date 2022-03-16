@@ -18,6 +18,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
         private Uri _link;
         private Enclosure _enclosure;
         private Uri _image;
+        private string _content;
 
         public PodcastRssEpisodeBuilder WithEpisodeType(
             EpisodeType episodeType)
@@ -44,6 +45,13 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
             string description)
         {
             _description = description;
+            return this;
+        }
+
+        public PodcastRssEpisodeBuilder WithContent(
+            string content)
+        {
+            _content = content;
             return this;
         }
 
@@ -107,7 +115,8 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
         {
             return WithEpisodeType(EpisodeType.Full)
                 .WithId("20f0fc4c7c404").WithTitle("At vero eos et accusam et justo duo")
-                .WithDescription(@"<p>Lorem ipsum dolor sit amet, <a href=""https://www.apple.com/itunes/podcasts/"">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>")
+                .WithDescription("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.")
+                .WithContent(@"<p>Lorem ipsum dolor sit amet, <a href=""https://www.apple.com/itunes/podcasts/"">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>")
                 .WithAuthor("Lorem")
                 .WithDate(new DateTime(2020, 4, 9, 14, 45, 00))
                 .WithDuration(TimeSpan.FromSeconds(1079))
@@ -129,6 +138,7 @@ namespace dng.Syndication.Tests.TestdataBuilder.Podcasts
                 Guid = _id,
                 Title = _title,
                 Description = _description,
+                Content = _content,
                 Author = _author,
                 Date = _date,
                 EpisodeNumber = _episodeNumber,

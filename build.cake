@@ -106,7 +106,7 @@ Task("Test")
 });
 
 Task("Pack")
-    .IsDependentOn("Test")
+    .IsDependentOn("Build")
     .Does(() => 
 {
     DotNetCorePack("./src/dng.Syndication.csproj", new DotNetCorePackSettings

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Text;
+using System.Web;
 using System.Xml.Linq;
 using dng.Syndication.Models;
+
 using static System.String;
 
 namespace dng.Syndication.Generators
@@ -38,7 +41,7 @@ namespace dng.Syndication.Generators
 
             channel.Add(new XElement("link", _feed.Link));
 
-            channel.Add(new XElement("description", _feed.Description));
+            channel.Add(new XElement("description", new XCData(_feed.Description)));
 
             if (!IsNullOrWhiteSpace(_feed.Copyright))
                 channel.Add(new XElement("copyright", _feed.Copyright));
@@ -67,9 +70,9 @@ namespace dng.Syndication.Generators
                 if (feedEntry.Author != null)
                     itemElement.Add(new XElement("author", $"{feedEntry.Author.Email} ({feedEntry.Author.Name})"));
 
-                itemElement.Add(new XElement("guid", feedEntry.Link));
+                itemElement.Add(new XElement("guid", HttpUtility.UrlDecode(feedEntry.Link.ToString(), Encoding.UTF8)));
 
-                itemElement.Add(new XElement("link", feedEntry.Link));
+                itemElement.Add(new XElement("link", HttpUtility.UrlDecode(feedEntry.Link.ToString(), Encoding.UTF8)));
 
                 if (feedEntry.PublishDate != DateTime.MinValue)
                     itemElement.Add(new XElement("pubDate", FormatDateRfc2822(feedEntry.PublishDate)));

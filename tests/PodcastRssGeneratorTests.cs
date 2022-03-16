@@ -44,7 +44,7 @@ namespace dng.Syndication.Tests
                     .Build())
                 .WithEpisode(new PodcastRssEpisodeBuilder()
                     .WithTitle("Et accusam et justo duo")
-                    .WithDescription(@"<p>Lorem ipsum dolor sit amet, <a href=""https://www.apple.com/itunes/podcasts/"">consetetur sadipscing</a> elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p><p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br />Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>")
+                    .WithDescription("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat")
                     .WithDuration(TimeSpan.FromSeconds(1102))
                     .WithId("40f0fc5c7c404")
                     .WithEpisodeType(EpisodeType.Full)

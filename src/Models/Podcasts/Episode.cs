@@ -31,6 +31,11 @@ namespace dng.Syndication.Models.Podcasts
         /// </summary>
         public string Description{ get; set; }
 
+        /// <summary>
+        /// An episode description allows html tags.
+        /// </summary>
+        public string Content { get; set; }
+
         public string Author { get; set; }
 
         /// <summary>
