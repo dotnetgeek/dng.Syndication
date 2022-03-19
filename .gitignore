@@ -1,5 +1,6 @@
 # Visual Studio Code
 .vscode
+launchSettings.json
 
 # Visual Studio 2015
 .vs/
@@ -23,8 +24,10 @@ artifacts/
 [Oo]bj/
 
 #other
+/.dotnet/
+dotnet-install.sh*
+/.packages/
 tools/
-sqlite3/
 
 #dotnet core
 project.lock.json
