@@ -71,8 +71,7 @@ namespace dng.Syndication.Generators
                 itemElement.Add(new XElement(ns + "title", feedEntry.Title));
 
                 itemElement.Add(new XElement(ns + "link", 
-                    new XAttribute("href", 
-                    HttpUtility.UrlDecode(feedEntry.Link.ToString(), Encoding.UTF8))));
+                    new XAttribute("href", feedEntry.Link.AbsoluteUri)));
 
                 if (!string.IsNullOrWhiteSpace(feedEntry.Summary))
                     itemElement.Add(new XElement(ns + "summary", feedEntry.Summary));
@@ -103,7 +102,7 @@ namespace dng.Syndication.Generators
                     itemElement.Add(author);
                 }
 
-                itemElement.Add(new XElement(ns + "id", feedEntry.Link));
+                itemElement.Add(new XElement(ns + "id", feedEntry.Link.AbsoluteUri));
 
                 if (feedEntry.Updated != DateTime.MinValue)
                     itemElement.Add(new XElement(ns + "updated", feedEntry.Updated.ToString(DateTimeRfc3339Format)));

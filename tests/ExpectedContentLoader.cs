@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 
 namespace dng.Syndication.Tests
 {
     internal static  class ExpectedContentLoader
     {
         private const string ExamplesPath = "Examples";
+
+        internal static string BuildFilePath(
+            string expectedFile)
+        {
+            return Path.Combine(ExamplesPath, expectedFile);
+        }
 
         internal static string LoadFromFile(
             string expectedFile)

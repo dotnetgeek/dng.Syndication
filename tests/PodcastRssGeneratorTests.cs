@@ -9,6 +9,8 @@ using System.Linq;
 using Xunit;
 using FluentAssertions;
 using dng.Syndication.Tests.TestdataBuilder.Podcasts;
+using System.IO;
+using Org.XmlUnit.Builder;
 
 namespace dng.Syndication.Tests
 {
@@ -63,7 +65,15 @@ namespace dng.Syndication.Tests
             var generator = new PodcastRssGenerator(true);
             var generatedRss = generator.Process(channel);
 
-            generatedRss.Should().Be(ExpectedContentLoader.LoadFromFile("SimplePodcastRssFeed.xml"));
+            var expectedInput = Input.FromFile(ExpectedContentLoader.BuildFilePath("SimplePodcastRssFeed.xml")).Build();
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(generatedRss)))
+            {
+                var result = Input.FromStream(stream).Build();
+                var diffBuilder = DiffBuilder.Compare(expectedInput).WithTest(result).Build();
+
+                diffBuilder.HasDifferences().Should().BeFalse();
+            }
         }
     }
 }

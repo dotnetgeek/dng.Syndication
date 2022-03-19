@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-using dng.Syndication.Generators;
+﻿using dng.Syndication.Generators;
 using dng.Syndication.Models;
-
-using Xunit;
 using FluentAssertions;
+using Org.XmlUnit;
+using Org.XmlUnit.Builder;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Xunit;
 
 namespace dng.Syndication.Tests
 {
@@ -50,8 +52,15 @@ namespace dng.Syndication.Tests
             var atomGenerator = new AtomGenerator(CreateFeed(), true);
             var feedXml = atomGenerator.Process();
 
-            feedXml.Should().Be(ExpectedContentLoader.LoadFromFile("SimpleAtomFeed.xml"));
+            var expectedInput = Input.FromFile(ExpectedContentLoader.BuildFilePath("SimpleAtomFeed.xml")).Build();
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(feedXml)))
+            {
+                var result = Input.FromStream(stream).Build();
+                var d = DiffBuilder.Compare(expectedInput).WithTest(result).Build();
+
+                d.HasDifferences().Should().BeFalse();
+            }
         }
     }
 }
-

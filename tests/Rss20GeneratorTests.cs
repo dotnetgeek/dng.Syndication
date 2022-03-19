@@ -6,6 +6,9 @@ using dng.Syndication.Models;
 
 using Xunit;
 using FluentAssertions;
+using System.IO;
+using System.Text;
+using Org.XmlUnit.Builder;
 
 namespace dng.Syndication.Tests
 {
@@ -50,8 +53,15 @@ namespace dng.Syndication.Tests
             var rss20Generator = new RSS20Generator(CreateFeed(), true);
             var feedXml = rss20Generator.Process();
 
-            feedXml.Should().Be(ExpectedContentLoader.LoadFromFile("SimpleRssFeed.xml"));
+            var expectedInput = Input.FromFile(ExpectedContentLoader.BuildFilePath("SimpleRssFeed.xml")).Build();
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(feedXml)))
+            {
+                var result = Input.FromStream(stream).Build();
+                var diffBuilder = DiffBuilder.Compare(expectedInput).WithTest(result).Build();
+
+                diffBuilder.HasDifferences().Should().BeFalse();
+            }
         }
     }
 }
-

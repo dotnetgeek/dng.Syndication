@@ -41,7 +41,7 @@ namespace dng.Syndication.Generators
 
             channel.Add(new XElement("link", _feed.Link));
 
-            channel.Add(new XElement("description", new XCData(_feed.Description)));
+            channel.Add(new XElement("description", _feed.Description));
 
             if (!IsNullOrWhiteSpace(_feed.Copyright))
                 channel.Add(new XElement("copyright", _feed.Copyright));
@@ -65,14 +65,14 @@ namespace dng.Syndication.Generators
             {
                 var itemElement = new XElement("item");
                 itemElement.Add(new XElement("title", feedEntry.Title));
-                itemElement.Add(new XElement("description", feedEntry.Content));
+                itemElement.Add(new XElement("description", new XCData(feedEntry.Content)));
 
                 if (feedEntry.Author != null)
                     itemElement.Add(new XElement("author", $"{feedEntry.Author.Email} ({feedEntry.Author.Name})"));
 
-                itemElement.Add(new XElement("guid", HttpUtility.UrlDecode(feedEntry.Link.ToString(), Encoding.UTF8)));
+                itemElement.Add(new XElement("guid", feedEntry.Link.AbsoluteUri));
 
-                itemElement.Add(new XElement("link", HttpUtility.UrlDecode(feedEntry.Link.ToString(), Encoding.UTF8)));
+                itemElement.Add(new XElement("link", feedEntry.Link.AbsoluteUri));
 
                 if (feedEntry.PublishDate != DateTime.MinValue)
                     itemElement.Add(new XElement("pubDate", FormatDateRfc2822(feedEntry.PublishDate)));
